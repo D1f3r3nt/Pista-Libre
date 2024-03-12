@@ -1,37 +1,39 @@
-CREATE DATABASE pistalibrebdd;
+CREATE schema pistalibrebdd;
 
-USE pistalibrebdd;
-
-CREATE TABLE USER (
-    id int not null auto_increment,
+CREATE TABLE pistalibrebdd.USER (
+    id serial,
     username varchar(255) not null UNIQUE,
     fullname varchar(500) not null,
+    photo varchar(500),
     side_play char(1),
+    email varchar(255) not null,
     password varchar(255) not null,
     PRIMARY KEY (id)
 );
 
-CREATE TABLE CLUB (
-    id int not null auto_increment,
+CREATE TABLE pistalibrebdd.CLUB (
+    id serial,
     name varchar(255) not null,
     location varchar(255) not null,
+    photo varchar(500),
+    email varchar(255) not null,
     password varchar(255) not null,
     PRIMARY KEY (id)
 );
 
-CREATE TABLE COURT (
-    id int not null auto_increment,
+CREATE TABLE pistalibrebdd.COURT (
+    id serial,
     club int not null,
     number int not null,
     indoor bool, 
     price decimal(10, 2),
     PRIMARY KEY (id),
-    CONSTRAINT UN_CLUB UNIQUE (id, club),
-    FOREIGN KEY (club) REFERENCES CLUB(id)
+    CONSTRAINT UN_CLUB UNIQUE (number, club),
+    FOREIGN KEY (club) REFERENCES pistalibrebdd.CLUB(id)
 );
 
-CREATE TABLE BOOKING (
-    id int not null auto_increment,
+CREATE TABLE pistalibrebdd.BOOKING (
+    id serial,
     court int not null,
     date varchar(300) not null,
     p1 int not null,
@@ -39,31 +41,31 @@ CREATE TABLE BOOKING (
     p3 int,
     p4 int,
     PRIMARY KEY (id),
-    CONSTRAINT UN_BOOKING UNIQUE (id, court),
-    FOREIGN KEY (court) REFERENCES COURT(id),
-    FOREIGN KEY (p1) REFERENCES USER(id),
-    FOREIGN KEY (p2) REFERENCES USER(id),
-    FOREIGN KEY (p3) REFERENCES USER(id),
-    FOREIGN KEY (p4) REFERENCES USER(id)
+    CONSTRAINT UN_BOOKING UNIQUE (date, court),
+    FOREIGN KEY (court) REFERENCES pistalibrebdd.COURT(id),
+    FOREIGN KEY (p1) REFERENCES pistalibrebdd.USER(id),
+    FOREIGN KEY (p2) REFERENCES pistalibrebdd.USER(id),
+    FOREIGN KEY (p3) REFERENCES pistalibrebdd.USER(id),
+    FOREIGN KEY (p4) REFERENCES pistalibrebdd.USER(id)
 );
 
-CREATE TABLE SOCIAL (
-    id int not null auto_increment,
-    user int not null,
+CREATE TABLE pistalibrebdd.SOCIAL (
+    id serial,
+    owner int not null,
     date varchar(300) not null,
     text varchar(300) not null,
     photo varchar(500),
     PRIMARY KEY (id),
-    FOREIGN KEY (user) REFERENCES USER(id)
+    FOREIGN KEY (owner) REFERENCES pistalibrebdd.USER(id)
 );
 
-CREATE TABLE MESSAGE (
-	id int not null auto_increment,
-	USER int NOT NULL,
+CREATE TABLE pistalibrebdd.MESSAGE (
+	id serial,
+	owner int NOT NULL,
 	text varchar(300) NOT NULL,
 	date varchar(300) NOT NULL,
 	target_user int NOT NULL,
 	PRIMARY KEY (id),
-	FOREIGN KEY (USER) REFERENCES USER(id),
-	FOREIGN KEY (target_user) REFERENCES USER(id)
+	FOREIGN KEY (owner) REFERENCES pistalibrebdd.USER(id),
+	FOREIGN KEY (target_user) REFERENCES pistalibrebdd.USER(id)
 );
