@@ -9,5 +9,6 @@ struct AuthController: RouteCollection {
         
         let auth = routes.grouped("auth")
         auth.post("sign-up", use: authService.singUp)
+        auth.get("log-in", use: authService.logIn)
     }
 }
