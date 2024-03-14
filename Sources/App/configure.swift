@@ -3,10 +3,7 @@ import Fluent
 import FluentPostgresDriver
 import Vapor
 
-// configures your application
 public func configure(_ app: Application) async throws {
-    // uncomment to serve files from /Public folder
-    // app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
     
     guard let _ = Environment.process.API_KEY else { fatalError("API_KEY not found") }
     guard let databaseURL = Environment.process.DATABASE_URL else { fatalError("DATABASE_URL not found") }
@@ -16,7 +13,10 @@ public func configure(_ app: Application) async throws {
         as: .psql
     )
 
-    app.migrations.add(CreateTodo())
+    // New migrations
+    app.migrations.add(CreateDB())
+    try await app.autoMigrate()
+    
     // register routes
     try routes(app)
 }
