@@ -70,19 +70,21 @@ class AuthService {
             email: email
         )
         
-        if (user === nil && club === nil) {
+        if (user == nil && club == nil) {
             
             throw Abort(.badRequest, reason: "Email dosen't exist")
             
-        } else if (user !== nil) {
+        } else if (user != nil) {
             
             if (user!.password != password) {
                 throw Abort(.badRequest, reason: "Incorrect password")
             }
             
-            return Response(
+            let jwtToken = Security(id: user!.id!, type: "user")
+            
+            return try Response(
                 status: .ok,
-                body: Response.Body(stringLiteral: "user")
+                body: Response.Body(stringLiteral: req.jwt.sign(jwtToken))
             )
             
         } else {
@@ -91,10 +93,21 @@ class AuthService {
                 throw Abort(.badRequest, reason: "Incorrect password")
             }
             
-            return Response(
+            let jwtToken = Security(id: club!.id!, type: "club")
+            
+            return try Response(
                 status: .ok,
-                body: Response.Body(stringLiteral: "club")
+                body: Response.Body(stringLiteral: req.jwt.sign(jwtToken))
             )
         }
+    }
+    
+    func checkToken(req: Request) async throws -> Response {
+        let sec: Security = try req.jwt.verify(as: Security.self)
+        
+        return try Response(
+            status: .ok,
+            body: Response.Body(data: JSONEncoder().encode(sec))
+        )
     }
 }
