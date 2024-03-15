@@ -18,5 +18,7 @@ struct AuthController: RouteCollection {
         }
         
         auth.get("log-in", use: authService.logIn)
+        
+        auth.get("checkToken", use: authService.checkToken)
     }
 }
