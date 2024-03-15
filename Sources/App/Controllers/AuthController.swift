@@ -8,7 +8,15 @@ struct AuthController: RouteCollection {
     func boot(routes: RoutesBuilder) throws {
         
         let auth = routes.grouped("auth")
-        auth.post("sign-up", use: authService.singUp)
+        
+        auth.group("user") { userAuth in
+            userAuth.post("sign-up", use: authService.userSingUp)
+        }
+        
+        auth.group("club") { clubAuth in
+            clubAuth.post("sign-up", use: authService.clubSingUp)
+        }
+        
         auth.get("log-in", use: authService.logIn)
     }
 }
