@@ -13,16 +13,18 @@ struct CreateDB: AsyncMigration {
             .field("email", .string, .required)
             .field("password", .string, .required)
             .unique(on: "username")
+            .unique(on: "email")
             .create()
         
         // Create Club
         try await database.schema("club")
             .field("id", .int, .identifier(auto: true))
             .field("name", .string, .required)
-            .field("loaction", .string, .required)
+            .field("location", .string, .required)
             .field("photo", .string)
             .field("email", .string, .required)
             .field("password", .string, .required)
+            .unique(on: "email")
             .create()
         
         // Create Court
