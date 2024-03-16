@@ -3,18 +3,24 @@ import Fluent
 
 class AuthService {
     
+    private let clubRepostiory: ClubRepository = .init()
+    private let userRepository: UserRepository = .init()
+    
     func userSingUp(req: Request) async throws -> Response {
         
         do {
-            let newUser: User = try req.content.decode(User.self)
+            let newUser: UserDTO = try req.content.decode(UserDTO.self)
             
-            let existsEmail = try await ClubRepository.getFromEmail(db: req.db, email: newUser.email)
+            let existsEmail = try await clubRepostiory.getFromEmail(
+                db: req.db,
+                email: newUser.email
+            )
             
             if (existsEmail != nil) {
                 throw Abort(.badRequest, reason: "Email already exists as a Club")
             }
             
-            try await UserRepository.create(db: req.db, user: newUser)
+            try await userRepository.create(db: req.db, user: newUser)
             
         } catch let error {
             throw Abort(
@@ -29,16 +35,19 @@ class AuthService {
     func clubSingUp(req: Request) async throws -> Response {
         
         do {
-            let newClub: Club = try req.content.decode(Club.self)
+            let newClub: ClubDTO = try req.content.decode(ClubDTO.self)
             
             
-            let existsEmial = try await UserRepository.getFromEmail(db: req.db, email: newClub.email)
+            let existsEmial = try await userRepository.getFromEmail(
+                db: req.db,
+                email: newClub.email
+            )
             
             if (existsEmial != nil) {
                 throw Abort(.badRequest, reason: "Email already exists as a User")
             }
             
-            try await ClubRepository.create(db: req.db, club: newClub)
+            try await clubRepostiory.create(db: req.db, club: newClub)
             
         } catch let error {
             throw Abort(
@@ -60,12 +69,12 @@ class AuthService {
             throw Abort(.badRequest, reason: "Password missed")
         }
         
-        let user: User? = try await UserRepository.getFromEmail(
+        let user: User? = try await userRepository.getFromEmail(
             db: req.db,
             email: email
         )
         
-        let club: Club? = try await ClubRepository.getFromEmail(
+        let club: Club? = try await clubRepostiory.getFromEmail(
             db: req.db,
             email: email
         )
@@ -80,7 +89,7 @@ class AuthService {
                 throw Abort(.badRequest, reason: "Incorrect password")
             }
             
-            let jwtToken = Security(id: user!.id!, type: "user")
+            let jwtToken = Security(id: user!.id!, type: Role.USER.rawValue)
             
             return try Response(
                 status: .ok,
@@ -93,7 +102,7 @@ class AuthService {
                 throw Abort(.badRequest, reason: "Incorrect password")
             }
             
-            let jwtToken = Security(id: club!.id!, type: "club")
+            let jwtToken = Security(id: club!.id!, type: Role.CLUB.rawValue)
             
             return try Response(
                 status: .ok,

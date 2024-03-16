@@ -1,9 +1,9 @@
 import Fluent
 import Vapor
 
-typealias Clubs = [Club]
+typealias ClubsDTO = [ClubDTO]
 
-final class Club: Model  {
+final class ClubDTO: Model  {
     static let schema = "club"
     
     @ID(custom: "id")

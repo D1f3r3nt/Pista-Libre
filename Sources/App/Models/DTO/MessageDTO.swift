@@ -1,10 +1,10 @@
 import Fluent
 import Vapor
 
-typealias Socials = [Social]
+typealias MessagesDTO = [MessageDTO]
 
-final class Social: Model  {
-    static let schema = "social"
+final class MessageDTO: Model  {
+    static let schema = "message"
     
     @ID(custom: "id")
     var id: Int?
@@ -18,8 +18,8 @@ final class Social: Model  {
     @Field(key: "text")
     var text: String
     
-    @Field(key: "photo")
-    var photo: String?
+    @Field(key: "target_user")
+    var targetUser: Int
     
     init() { }
     
@@ -28,12 +28,12 @@ final class Social: Model  {
         owner: Int,
         date: String,
         text: String,
-        photo: String?
+        targetUser: Int
     ) {
         self.id = id
         self.owner = owner
         self.date = date
-        self.photo = photo
+        self.targetUser = targetUser
         self.text = text
     }
 }
