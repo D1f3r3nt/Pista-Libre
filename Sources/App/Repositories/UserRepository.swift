@@ -3,13 +3,21 @@ import Vapor
 
 final class UserRepository {
     
-    static func create(db: Database, user: User) async throws {
+    private let mapper: MapperDTOtoLocal = .init()
+    
+    func create(db: Database, user: UserDTO) async throws {
         try await user.create(on: db)
     }
     
-    static func getFromEmail(db: Database, email: String) async throws -> User? {
-        return try await User.query(on: db)
+    func getFromEmail(db: Database, email: String) async throws -> User? {
+        let userDto = try await UserDTO.query(on: db)
             .filter(\.$email == email)
             .first()
+        
+        if (userDto == nil) {
+            return nil
+        }
+        
+        return mapper.user(userDto: userDto!)
     }
 }

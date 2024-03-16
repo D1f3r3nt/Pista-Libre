@@ -1,9 +1,9 @@
 import Fluent
 import Vapor
 
-typealias Courts = [Court]
+typealias CourtsDTO = [CourtDTO]
 
-final class Court: Model  {
+final class CourtDTO: Model  {
     static let schema = "court"
     
     @ID(custom: "id")
