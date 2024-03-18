@@ -4,10 +4,11 @@ import Fluent
 class ClubService {
     
     private let clubRepository: ClubRepository = .init()
+    private let security: SecurityService = .init()
     private let mapper: MapperLocalToAPI = .init()
     
     func getAll(req: Request) async throws -> Response {
-        try checkAuthUser(req: req)
+        try security.checkAuthUser(req: req)
         
         let clubs: Clubs = try await clubRepository.getAll(db: req.db)
         
@@ -21,11 +22,4 @@ class ClubService {
         )
     }
     
-    private func checkAuthUser(req: Request) throws {
-        let sec: Security = try req.jwt.verify(as: Security.self)
-        
-        if (sec.type != Role.USER.rawValue) {
-            throw Abort(.unauthorized, reason: "Clubs cannot do this action")
-        }
-    }
 }

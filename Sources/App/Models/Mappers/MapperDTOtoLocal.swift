@@ -22,4 +22,16 @@ final class MapperDTOtoLocal {
             password: userDto.password
         )
     }
+    
+    func booking(bookingDto: BookingDTO) -> Booking {
+        Booking(
+            id: bookingDto.id,
+            court: bookingDto.court,
+            date: bookingDto.date,
+            p1: bookingDto.p1,
+            p2: bookingDto.p2,
+            p3: bookingDto.p3,
+            p4: bookingDto.p4
+        )
+    }
 }
