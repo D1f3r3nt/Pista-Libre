@@ -11,5 +11,8 @@ struct ClubController: RouteCollection {
         
         // club/all
         club.get("all", use: clubService.getAll)
+        
+        // club/get/:id
+        club.get("get", ":id", use: clubService.getOne)
     }
 }
