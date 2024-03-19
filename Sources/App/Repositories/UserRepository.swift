@@ -20,4 +20,14 @@ final class UserRepository {
         
         return mapper.user(userDto: userDto!)
     }
+    
+    func update(db: Database, user: UserDTO) async throws {
+        try await UserDTO.query(on: db)
+            .set(\.$username, to: user.username)
+            .set(\.$fullname, to: user.fullname)
+            .set(\.$photo, to: user.photo)
+            .set(\.$sidePlay, to: user.sidePlay)
+            .filter(\.$id == user.id!)
+            .update()
+    }
 }

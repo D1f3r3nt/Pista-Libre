@@ -11,6 +11,7 @@ class ConfigController: RouteCollection {
         config.post("club", use: configService.club)
         
         // config/user
+        config.post("user", use: configService.user)
     }
     
 }

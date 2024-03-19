@@ -6,6 +6,7 @@ final class ConfigService {
     private let security: SecurityService = .init()
     private let clubRepository: ClubRepository = .init()
     private let courtRepository: CourtRepository = .init()
+    private let userRepository: UserRepository = .init()
     
     func club(req: Request) async throws -> Response {
         let idClub = try security.checkAuthClub(req: req)
@@ -46,6 +47,24 @@ final class ConfigService {
                 )
             )
         }
+        
+        return Response(status: .ok)
+    }
+    
+    func user(req: Request) async throws -> Response {
+        let idUser = try security.checkAuthUser(req: req)
+        
+        let user = try req.content.decode(ConfigUserRequest.self)
+        
+        try await userRepository.update(db: req.db, user: UserDTO(
+            id: idUser,
+            username: user.username,
+            fullname: user.fullname,
+            photo: user.photo,
+            sidePlay: user.sidePlay,
+            email: "",
+            password: ""
+        ))
         
         return Response(status: .ok)
     }
