@@ -11,6 +11,9 @@ final class SocialRepository {
             .map({ socialDto in
                 mapper.social(socialDto: socialDto)
             })
-        
+    }
+    
+    func create(db: Database, social: SocialDTO) async throws {
+        try await social.create(on: db)
     }
 }

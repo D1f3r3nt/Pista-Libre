@@ -10,6 +10,9 @@ class SocialController: RouteCollection {
         
         // social/get
         social.get("get", use: socialService.getAll)
+        
+        // social/send
+        social.post("send", use: socialService.send)
     }
     
     
