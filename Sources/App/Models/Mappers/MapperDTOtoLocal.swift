@@ -44,4 +44,14 @@ final class MapperDTOtoLocal {
             photo: socialDto.photo
         )
     }
+    
+    func court(courtDto: CourtDTO) -> Court {
+        Court(
+            id: courtDto.id,
+            club: courtDto.club,
+            number: courtDto.number,
+            indoor: courtDto.indoor,
+            price: courtDto.price
+        )
+    }
 }

@@ -54,4 +54,16 @@ final class ClubRepository {
         
         return mapper.club(clubDto: clubDto!)
     }
+    
+    func getById(db: Database, id: Int) async throws -> Club? {
+        let clubDto = try await ClubDTO.query(on: db)
+            .filter(\.$id == id)
+            .first()
+        
+        if (clubDto == nil) {
+            return nil
+        }
+        
+        return mapper.club(clubDto: clubDto!)
+    }
 }
