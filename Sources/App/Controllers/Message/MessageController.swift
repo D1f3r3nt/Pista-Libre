@@ -11,8 +11,10 @@ class MessageController: RouteCollection {
         message.post("send", ":idReciver", use: messageService.send)
         
         // message/get/:idReciver
+        message.get("get", ":idReciver", use: messageService.getChat)
         
         // message/get/chats
+        message.get("get", "chats", use: messageService.getAllChats)
     }
     
 }

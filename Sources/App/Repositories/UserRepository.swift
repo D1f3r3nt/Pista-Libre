@@ -21,6 +21,18 @@ final class UserRepository {
         return mapper.user(userDto: userDto!)
     }
     
+    func getById(db: Database, id: Int) async throws -> User? {
+        let userDto = try await UserDTO.query(on: db)
+            .filter(\.$id == id)
+            .first()
+        
+        if (userDto == nil) {
+            return nil
+        }
+        
+        return mapper.user(userDto: userDto!)
+    }
+    
     func update(db: Database, user: UserDTO) async throws {
         try await UserDTO.query(on: db)
             .set(\.$username, to: user.username)
