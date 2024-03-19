@@ -8,4 +8,5 @@ func routes(_ app: Application) throws {
     try app.register(collection: BookingController())
     try app.register(collection: ConfigController())
     try app.register(collection: SocialController())
+    try app.register(collection: MessageController())
 }
