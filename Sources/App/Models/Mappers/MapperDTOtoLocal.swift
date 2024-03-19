@@ -34,4 +34,14 @@ final class MapperDTOtoLocal {
             p4: bookingDto.p4
         )
     }
+    
+    func social(socialDto: SocialDTO) -> Social {
+        Social(
+            id: socialDto.id,
+            owner: socialDto.owner,
+            date: socialDto.date,
+            text: socialDto.text,
+            photo: socialDto.photo
+        )
+    }
 }

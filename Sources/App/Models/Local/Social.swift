@@ -1,6 +1,6 @@
 typealias Socials = [Social]
 
-struct Social {
+struct Social: Codable {
     
     let id: Int?
     let owner: Int

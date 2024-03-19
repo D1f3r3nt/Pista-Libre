@@ -21,4 +21,10 @@ final class SecurityService {
         
         return sec.id
     }
+    
+    func check(req: Request) throws -> Int {
+        let sec = try req.jwt.verify(as: Security.self)
+        
+        return sec.id
+    }
 }
