@@ -6,7 +6,7 @@ CREATE TABLE pistalibrebdd.USER (
     fullname varchar(500) not null,
     photo varchar(500),
     side_play char(1),
-    email varchar(255) not null,
+    email varchar(255) not null UNIQUE,
     password varchar(255) not null,
     PRIMARY KEY (id)
 );
@@ -16,7 +16,7 @@ CREATE TABLE pistalibrebdd.CLUB (
     name varchar(255) not null,
     location varchar(255) not null,
     photo varchar(500),
-    email varchar(255) not null,
+    email varchar(255) not null UNIQUE,
     password varchar(255) not null,
     PRIMARY KEY (id)
 );
@@ -29,7 +29,7 @@ CREATE TABLE pistalibrebdd.COURT (
     price decimal(10, 2),
     PRIMARY KEY (id),
     CONSTRAINT UN_CLUB UNIQUE (number, club),
-    FOREIGN KEY (club) REFERENCES pistalibrebdd.CLUB(id)
+    FOREIGN KEY (club) REFERENCES pistalibrebdd.CLUB(id) ON DELETE CASCADE
 );
 
 CREATE TABLE pistalibrebdd.BOOKING (
@@ -42,11 +42,11 @@ CREATE TABLE pistalibrebdd.BOOKING (
     p4 int,
     PRIMARY KEY (id),
     CONSTRAINT UN_BOOKING UNIQUE (date, court),
-    FOREIGN KEY (court) REFERENCES pistalibrebdd.COURT(id),
-    FOREIGN KEY (p1) REFERENCES pistalibrebdd.USER(id),
-    FOREIGN KEY (p2) REFERENCES pistalibrebdd.USER(id),
-    FOREIGN KEY (p3) REFERENCES pistalibrebdd.USER(id),
-    FOREIGN KEY (p4) REFERENCES pistalibrebdd.USER(id)
+    FOREIGN KEY (court) REFERENCES pistalibrebdd.COURT(id) ON DELETE CASCADE,
+    FOREIGN KEY (p1) REFERENCES pistalibrebdd.USER(id) ON DELETE CASCADE,
+    FOREIGN KEY (p2) REFERENCES pistalibrebdd.USER(id) ON DELETE CASCADE,
+    FOREIGN KEY (p3) REFERENCES pistalibrebdd.USER(id) ON DELETE CASCADE,
+    FOREIGN KEY (p4) REFERENCES pistalibrebdd.USER(id) ON DELETE CASCADE
 );
 
 CREATE TABLE pistalibrebdd.SOCIAL (
@@ -56,7 +56,7 @@ CREATE TABLE pistalibrebdd.SOCIAL (
     text varchar(300) not null,
     photo varchar(500),
     PRIMARY KEY (id),
-    FOREIGN KEY (owner) REFERENCES pistalibrebdd.USER(id)
+    FOREIGN KEY (owner) REFERENCES pistalibrebdd.USER(id) ON DELETE CASCADE
 );
 
 CREATE TABLE pistalibrebdd.MESSAGE (
