@@ -7,48 +7,62 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.pistalibreandroid.login.ui.LoginScreen
-import com.example.pistalibreandroid.login.ui.LoginViewModel
-import com.example.pistalibreandroid.navigation.AppScreens
-import com.example.pistalibreandroid.registro.registroClub.ui.SignClubScreen
-import com.example.pistalibreandroid.registro.registroClub.ui.SignClubViewModel
-import com.example.pistalibreandroid.registro.registroJugador.ui.RegistroJugadorScreen
-import com.example.pistalibreandroid.registro.registroJugador.ui.RegistroJugadorViewModel
-import com.example.pistalibreandroid.registro.ui.RegistroScreen
-import com.example.pistalibreandroid.splash.ui.SplashScreen
+import com.example.pistalibreandroid.ui.login.LoginScreen
+import com.example.pistalibreandroid.ui.login.LoginViewModel
+import com.example.pistalibreandroid.ui.navigation.Navigation
+import com.example.pistalibreandroid.ui.navigation.NavigationController
+import com.example.pistalibreandroid.ui.registro.SignScreen
+import com.example.pistalibreandroid.ui.registro.club.SignClubScreen
+import com.example.pistalibreandroid.ui.registro.club.SignClubViewModel
+import com.example.pistalibreandroid.ui.registro.player.SignUserScreen
+import com.example.pistalibreandroid.ui.registro.player.SignUserViewModel
+import com.example.pistalibreandroid.ui.splash.SplashScreen
 import com.example.pistalibreandroid.ui.theme.PistaLibreAndroidTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val loginViewModel:LoginViewModel by viewModels()
-    private val registroJugadorViewModel:RegistroJugadorViewModel by viewModels()
-    private val signClubViewModel:SignClubViewModel by viewModels()
+    private val loginViewModel: LoginViewModel by viewModels()
+    private val signUserViewModel: SignUserViewModel by viewModels()
+    private val signClubViewModel: SignClubViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val navController = rememberNavController()
+            NavigationController.init(navController)
+
             PistaLibreAndroidTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val navigationController = rememberNavController()
-                    NavHost(navController = navigationController, startDestination = AppScreens.SplashScreen.route ){
-                        composable(AppScreens.SplashScreen.route){ SplashScreen(navigationController)}
-                        composable(AppScreens.LoginScreen.route){ LoginScreen(loginViewModel, navigationController)}
-                        composable(AppScreens.RegistroScreen.route){ RegistroScreen(navigationController)}
-                        composable(AppScreens.RegistroJugadorScreen.route){ RegistroJugadorScreen(registroJugadorViewModel, navigationController)}
-                        composable(AppScreens.SignClubScreen.route){ SignClubScreen(signClubViewModel, navigationController)}
+                    NavHost(navController, startDestination = Navigation.SPLASH_ROUTE) {
+                        composable(Navigation.SPLASH_ROUTE) { 
+                            SplashScreen() 
+                        }
+                        
+                        composable(Navigation.LOGIN_ROUTE) { 
+                            LoginScreen(loginViewModel)
+                        }
+                        
+                        composable(Navigation.SIGN_UP_ROUTE) { 
+                            SignScreen()
+                        }
+                        
+                        composable(Navigation.SIGN_UP_USER_ROUTE) { 
+                            SignUserScreen(signUserViewModel)
+                        }
+                        
+                        composable(Navigation.SIGN_UP_CLUB_ROUTE) { 
+                            SignClubScreen(signClubViewModel)
+                        }
                     }
                 }
             }
