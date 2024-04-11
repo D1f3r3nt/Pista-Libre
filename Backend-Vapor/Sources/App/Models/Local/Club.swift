@@ -1,6 +1,6 @@
 typealias Clubs = [Club]
 
-struct Club {
+struct Club: Codable {
      
     let id: Int?
     let name: String
