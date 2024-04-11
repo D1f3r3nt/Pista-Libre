@@ -20,6 +20,8 @@ import com.example.pistalibreandroid.ui.registro.club.SignClubScreen
 import com.example.pistalibreandroid.ui.registro.club.SignClubViewModel
 import com.example.pistalibreandroid.ui.registro.player.SignUserScreen
 import com.example.pistalibreandroid.ui.registro.player.SignUserViewModel
+import com.example.pistalibreandroid.ui.setting.user.UserSettingScreen
+import com.example.pistalibreandroid.ui.setting.user.UserSettingViewModel
 import com.example.pistalibreandroid.ui.splash.SplashScreen
 import com.example.pistalibreandroid.ui.theme.PistaLibreAndroidTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,6 +32,7 @@ class MainActivity : ComponentActivity() {
     private val loginViewModel: LoginViewModel by viewModels()
     private val signUserViewModel: SignUserViewModel by viewModels()
     private val signClubViewModel: SignClubViewModel by viewModels()
+    private val userSettingViewModel: UserSettingViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +65,10 @@ class MainActivity : ComponentActivity() {
                         
                         composable(Navigation.SIGN_UP_CLUB_ROUTE) { 
                             SignClubScreen(signClubViewModel)
+                        }
+
+                        composable(Navigation.SETTING_USER_ROUTE) {
+                            UserSettingScreen(userSettingViewModel)
                         }
                     }
                 }

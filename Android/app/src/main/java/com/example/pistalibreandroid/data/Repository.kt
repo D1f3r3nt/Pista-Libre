@@ -30,6 +30,14 @@ class Repository @Inject constructor(
     ): Response<Unit> {
         return networkDataSource.singUpUser(username, fullName, email, password)
     }
+    
+    suspend fun configUser(
+        sidePlay: String,
+        username: String,
+        fullName: String,
+    ): Response<Unit> {
+        return networkDataSource.configUser(sidePlay, username, fullName, /*getToken() ?: ""*/ "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoidXNlciIsImlkIjoxfQ.m-v5z59bve7CJfe3YsPgQftblxsAF0W8z8XtWA14pAY")
+    }
 
     fun getToken(): String? {
         return localDataSource.getToken()

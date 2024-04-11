@@ -2,6 +2,7 @@ package com.example.pistalibreandroid.data.network
 
 import com.example.pistalibreandroid.data.network.apis.PistaLibreApi
 import com.example.pistalibreandroid.data.network.request.ClubCreateRequest
+import com.example.pistalibreandroid.data.network.request.UserConfigRequest
 import com.example.pistalibreandroid.data.network.request.UserCreateRequest
 import retrofit2.Response
 import javax.inject.Inject
@@ -32,4 +33,13 @@ class NetworkDataSource @Inject constructor(
         return api.singUpClub(ClubCreateRequest(name, location, email, password))
     }
 
+    suspend fun configUser(
+        sidePlay: String,
+        username: String,
+        fullName: String,
+        token: String
+    ): Response<Unit> {
+        return api.configUser("Bearer $token", UserConfigRequest("", username, fullName, sidePlay))
+    }
+    
 }
