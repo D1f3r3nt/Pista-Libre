@@ -9,3 +9,5 @@ db.sqlite
 .env.*
 ! .env.example
 .vscode
+.gradle/
+.idea/
