@@ -2,6 +2,7 @@ package com.example.pistalibreandroid.data
 
 import com.example.pistalibreandroid.data.local.LocalDataSource
 import com.example.pistalibreandroid.data.network.NetworkDataSource
+import com.example.pistalibreandroid.data.network.request.ClubCourtConfigRequest
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -36,7 +37,15 @@ class Repository @Inject constructor(
         username: String,
         fullName: String,
     ): Response<Unit> {
-        return networkDataSource.configUser(sidePlay, username, fullName, /*getToken() ?: ""*/ "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoidXNlciIsImlkIjoxfQ.m-v5z59bve7CJfe3YsPgQftblxsAF0W8z8XtWA14pAY")
+        return networkDataSource.configUser(sidePlay, username, fullName,getToken() ?: "")
+    }
+
+    suspend fun configClub(
+        name: String,
+        location: String,
+        clubCourtConfigRequest: List<ClubCourtConfigRequest>
+    ): Response<Unit> {
+        return networkDataSource.configClub(getToken() ?: "", name, location, clubCourtConfigRequest)
     }
 
     fun getToken(): String? {

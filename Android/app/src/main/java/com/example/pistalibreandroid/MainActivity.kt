@@ -20,6 +20,8 @@ import com.example.pistalibreandroid.ui.registro.club.SignClubScreen
 import com.example.pistalibreandroid.ui.registro.club.SignClubViewModel
 import com.example.pistalibreandroid.ui.registro.player.SignUserScreen
 import com.example.pistalibreandroid.ui.registro.player.SignUserViewModel
+import com.example.pistalibreandroid.ui.setting.club.ClubSettingScreen
+import com.example.pistalibreandroid.ui.setting.club.ClubSettingViewModel
 import com.example.pistalibreandroid.ui.setting.user.UserSettingScreen
 import com.example.pistalibreandroid.ui.setting.user.UserSettingViewModel
 import com.example.pistalibreandroid.ui.splash.SplashScreen
@@ -33,6 +35,7 @@ class MainActivity : ComponentActivity() {
     private val signUserViewModel: SignUserViewModel by viewModels()
     private val signClubViewModel: SignClubViewModel by viewModels()
     private val userSettingViewModel: UserSettingViewModel by viewModels()
+    private val clubSettingViewModel: ClubSettingViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,6 +72,10 @@ class MainActivity : ComponentActivity() {
 
                         composable(Navigation.SETTING_USER_ROUTE) {
                             UserSettingScreen(userSettingViewModel)
+                        }
+
+                        composable(Navigation.SETTING_CLUB_ROUTE) {
+                            ClubSettingScreen(clubSettingViewModel)
                         }
                     }
                 }

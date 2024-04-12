@@ -1,6 +1,5 @@
 package com.example.pistalibreandroid.ui.setting.user
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pistalibreandroid.data.Repository
@@ -37,14 +36,14 @@ class UserSettingViewModel @Inject constructor(
     fun onConfigChanged(fullname: String, username: String) {
         _fullname.value = fullname
         _username.value = username
-        _isConfigEnable.value = enableLogin(fullname, username)
+        _isConfigEnable.value = enableConfig(fullname, username)
     }
     
     fun changeSidePlay(sidePlay: Int) {
         _sidePlay.value = sidePlay
     }
 
-    fun enableLogin(fullname: String, username: String) = fullname.length > 1 && username.length > 1
+    fun enableConfig(fullname: String, username: String) = fullname.length > 1 && username.length > 1
     
     fun postConfig() {
         viewModelScope.launch {

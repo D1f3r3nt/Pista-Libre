@@ -8,6 +8,7 @@ sealed class Navigation(val route: String){
         const val SIGN_UP_CLUB_ROUTE = "signUpClub"
         const val SIGN_UP_USER_ROUTE = "signUpUser"
         const val SETTING_USER_ROUTE = "settingUser"
+        const val SETTING_CLUB_ROUTE = "settingClub"
     }
     
     object SPLASH: Navigation(SPLASH_ROUTE)
@@ -16,4 +17,5 @@ sealed class Navigation(val route: String){
     object SIGN_UP_CLUB: Navigation(SIGN_UP_CLUB_ROUTE)
     object SIGN_UP_USER: Navigation(SIGN_UP_USER_ROUTE)
     object SETTING_USER: Navigation(SETTING_USER_ROUTE)
+    object SETTING_CLUB: Navigation(SETTING_CLUB_ROUTE)
 }

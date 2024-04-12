@@ -1,5 +1,6 @@
 package com.example.pistalibreandroid.data.network.apis
 
+import com.example.pistalibreandroid.data.network.request.ClubCourtConfigRequest
 import com.example.pistalibreandroid.data.network.request.ClubCreateRequest
 import com.example.pistalibreandroid.data.network.request.UserConfigRequest
 import com.example.pistalibreandroid.data.network.request.UserCreateRequest
@@ -32,5 +33,13 @@ interface PistaLibreApi {
     suspend fun configUser(
         @Header(value = "Authorization") token: String,
         @Body userConfigRequest: UserConfigRequest
+    ): Response<Unit>
+
+    @POST("/config/club")
+    suspend fun configClub(
+        @Header(value = "Authorization") token: String,
+        @Query("name") name: String,
+        @Query("location") location: String,
+        @Body clubCourtConfigRequest: List<ClubCourtConfigRequest>
     ): Response<Unit>
 }
