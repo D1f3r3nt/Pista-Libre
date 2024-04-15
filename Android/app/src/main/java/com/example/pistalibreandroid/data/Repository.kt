@@ -2,6 +2,7 @@ package com.example.pistalibreandroid.data
 
 import com.example.pistalibreandroid.data.local.LocalDataSource
 import com.example.pistalibreandroid.data.network.NetworkDataSource
+import com.example.pistalibreandroid.data.network.response.ClubsListResponse
 import com.example.pistalibreandroid.data.network.request.ClubCourtConfigRequest
 import retrofit2.Response
 import javax.inject.Inject
@@ -31,13 +32,17 @@ class Repository @Inject constructor(
     ): Response<Unit> {
         return networkDataSource.singUpUser(username, fullName, email, password)
     }
-    
+
     suspend fun configUser(
         sidePlay: String,
         username: String,
         fullName: String,
     ): Response<Unit> {
         return networkDataSource.configUser(sidePlay, username, fullName,getToken() ?: "")
+    }
+
+    suspend fun getAllClubs(): Response<List<ClubsListResponse>>{
+        return networkDataSource.getAllClubs(getToken() ?: "")
     }
 
     suspend fun configClub(

@@ -61,7 +61,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.material:material-icons-extended:1.6.0")
+    implementation("androidx.compose.material:material-icons-extended:1.6.5")
 
     // Networking
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
@@ -73,10 +73,11 @@ dependencies {
 
     // Dagger Hilt
     implementation("com.google.dagger:hilt-android:2.46.1")
+    androidTestImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
     kapt("com.google.dagger:hilt-compiler:2.46.1")
 
     // Navigation
-    implementation("androidx.navigation:navigation-compose:2.7.6")
+    implementation("androidx.navigation:navigation-compose:2.7.7")
 
     // Async Image
     implementation("io.coil-kt:coil-compose:2.4.0")
@@ -96,4 +97,15 @@ dependencies {
 
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    //Tests
+    testImplementation("org.junit.jupiter:junit-jupiter:5.7.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.0")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.6.5")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.6.5")
+    testImplementation("io.mockk:mockk:1.13.10")
+    androidTestImplementation("io.mockk:mockk-android:1.13.10")
+    testImplementation("org.jetbrains.kotlin:kotlin-test")
+
 }

@@ -39,7 +39,7 @@ class NetworkModule {
     }
 
     @Provides
-    fun providesDragonBallApi(retrofit: Retrofit): PistaLibreApi {
+    fun providesPistaLibreApi(retrofit: Retrofit): PistaLibreApi {
         return retrofit.create(PistaLibreApi::class.java)
     }
 }

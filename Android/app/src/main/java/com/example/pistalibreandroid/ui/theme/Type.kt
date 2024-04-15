@@ -13,6 +13,14 @@ import com.example.pistalibreandroid.R
 val angkorFamily = FontFamily(
     Font(R.font.angkor_regular, FontWeight.Normal)
 )
+
+val robotoBold = FontFamily(
+    Font(R.font.roboto_bold, FontWeight.Bold),
+)
+
+val robotoLight = FontFamily(
+    Font(R.font.roboto_light, FontWeight.Light)
+)
 val Typography = Typography(
     bodyLarge = TextStyle(
         fontFamily = FontFamily.Default,

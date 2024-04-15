@@ -11,6 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.pistalibreandroid.ui.clubs.ClubsScreen
+import com.example.pistalibreandroid.ui.clubs.ClubsViewModel
 import com.example.pistalibreandroid.ui.login.LoginScreen
 import com.example.pistalibreandroid.ui.login.LoginViewModel
 import com.example.pistalibreandroid.ui.navigation.Navigation
@@ -34,6 +36,7 @@ class MainActivity : ComponentActivity() {
     private val loginViewModel: LoginViewModel by viewModels()
     private val signUserViewModel: SignUserViewModel by viewModels()
     private val signClubViewModel: SignClubViewModel by viewModels()
+    private val clubsViewModel: ClubsViewModel by viewModels()
     private val userSettingViewModel: UserSettingViewModel by viewModels()
     private val clubSettingViewModel: ClubSettingViewModel by viewModels()
 
@@ -55,7 +58,7 @@ class MainActivity : ComponentActivity() {
                         }
                         
                         composable(Navigation.LOGIN_ROUTE) { 
-                            LoginScreen(loginViewModel)
+                            LoginScreen(loginViewModel, navController)
                         }
                         
                         composable(Navigation.SIGN_UP_ROUTE) { 
@@ -68,6 +71,9 @@ class MainActivity : ComponentActivity() {
                         
                         composable(Navigation.SIGN_UP_CLUB_ROUTE) { 
                             SignClubScreen(signClubViewModel)
+                        }
+                        composable(Navigation.HOMEPLAYER_ROUTE){
+                            ClubsScreen(clubsViewModel)
                         }
 
                         composable(Navigation.SETTING_USER_ROUTE) {

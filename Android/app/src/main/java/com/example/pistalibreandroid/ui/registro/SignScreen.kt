@@ -19,6 +19,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
@@ -33,11 +35,20 @@ import com.example.pistalibreandroid.ui.theme.angkorFamily
 
 @Composable
 fun SignScreen() {
+
+    val colorgrisoscuro = colorResource(id = R.color.grisoscuro)
+    val gradient = Brush.linearGradient(
+        0f to Color.Black,
+        0.30f to Color.Black,
+        1f to colorgrisoscuro,
+        start = Offset(0f, 0f),
+        end = Offset(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY)
+    )
     
     Box(
         Modifier
             .fillMaxSize()
-            .background(color = Color.Black)
+            .background(brush = gradient)
             .padding(8.dp)
     ) {
         HeaderSign(Modifier.align(Alignment.TopCenter).padding(32.dp))
@@ -72,7 +83,7 @@ fun LogIn() {
     
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center){
         Text(text = "¿Ya tienes una cuenta?", fontSize = 12.sp, color = Color.White)
-        Text(text = "Iniciar sesión", Modifier.padding(horizontal = 8.dp).clickable { navController.navigate("login") }, fontSize = 12.sp, color = colorVerde)
+        Text(text = "Iniciar sesión", Modifier.padding(horizontal = 8.dp).clickable { navController.navigate(Navigation.LOGIN_ROUTE) }, fontSize = 12.sp, color = colorVerde)
     }
 }
 
