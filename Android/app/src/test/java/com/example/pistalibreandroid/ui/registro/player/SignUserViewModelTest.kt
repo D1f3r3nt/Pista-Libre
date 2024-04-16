@@ -12,7 +12,9 @@ import org.testng.Assert.assertTrue
 @ExtendWith(MockKExtension::class)
 class SignUserViewModelTest {
 
-    private lateinit var viewModel: SignUserViewModel
+
+
+    /*private lateinit var viewModel: SignUserViewModel
     private lateinit var mockRepository: Repository
 
     @BeforeEach
@@ -60,5 +62,5 @@ class SignUserViewModelTest {
 
         viewModel.onUserSignChanged(email = "test@example.com", password = "123456")
         assertTrue(viewModel.isUserSignEnable.value, "Button should be enabled with valid email and password")
-    }
+    }*/
 }

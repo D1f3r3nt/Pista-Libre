@@ -32,9 +32,6 @@ class LoginViewModel @Inject constructor(
     val isLoginEnable: StateFlow<Boolean> = _isLoginEnable
     val state: StateFlow<ResponseState> = _state
 
-    //Evento de navegación
-    private val _navigationEvent = MutableSharedFlow<String>()
-    val navigationEvent = _navigationEvent.asSharedFlow()
 
     fun onLoginChanged(email: String, password: String) {
         _email.value = email

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -57,92 +58,101 @@ import com.example.pistalibreandroid.ui.theme.robotoBold
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ClubsScreen(viewModel: ClubsViewModel){
+fun ClubsScreen(viewModel: ClubsViewModel) {
     val clubList by viewModel.clubsList.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
 
-    Scaffold(bottomBar = { BottomBar()}) {
-        if (isLoading){
+    Scaffold(bottomBar = { BottomBar() }) {
+        if (isLoading) {
             //Mostramos un indicador de carga
-            Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()){
+            Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
                 CircularProgressIndicator()
             }
-        }else {
+        } else {
             MainContent(clubList)
         }
     }
 }
 
 @Composable
-fun MainContent(clubList: List<ClubsListResponse>){
+fun MainContent(clubList: List<ClubsListResponse>) {
     val colorVerde = colorResource(id = R.color.verdeApp)
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .background(colorVerde)) {
-        TopBar()
-        ClubsList(clubList)
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(colorVerde)
+    ) {
+        Column {
+            TopBar()
+            ClubsList(clubList)
+        }
     }
 }
 
 @Composable
-fun ClubsList(clubList: List<ClubsListResponse>){
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
-        .background(color = Color.Black)) {
+fun ClubsList(clubList: List<ClubsListResponse>) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
+            .background(color = Color.Black)
+    ) {
         TextQuestion()
         FavoriteClubs(clubList)
         Spacer(modifier = Modifier.height(16.dp))
         LocationClubs(clubList)
     }
+
 }
 
 @Composable
-fun TextQuestion(){
+fun TextQuestion() {
     Row(modifier = Modifier.padding(16.dp)) {
-        Text(text = "¿Te apetece jugar hoy?",
+        Text(
+            text = "¿Te apetece jugar hoy?",
             color = Color.White,
             fontSize = 24.sp,
             fontFamily = robotoBold,
-            fontWeight = FontWeight.Bold)
+            fontWeight = FontWeight.Bold
+        )
     }
 }
 
 @Composable
-fun FavoriteClubs(clubList: List<ClubsListResponse>){
-    Column {
-        Text(
-            text = "Tus clubs favoritos",
-            color = Color.White,
-            fontFamily = robotoBold,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-        )
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
-            modifier = Modifier.padding(start = 16.dp, end = 16.dp)
-        ) {
-            items(clubList) { club ->
-                ClubItem(club = club)
-            }
+fun FavoriteClubs(clubList: List<ClubsListResponse>) {
+
+    Text(
+        text = "Tus clubs favoritos",
+        color = Color.White,
+        fontFamily = robotoBold,
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+    )
+    LazyRow(
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        modifier = Modifier.padding(start = 16.dp, end = 16.dp)
+    ) {
+        items(clubList) { club ->
+            ClubItem(club = club)
         }
     }
 }
 
 @Composable
 fun LocationClubs(clubList: List<ClubsListResponse>) {
-    Column {
-        Text(text = "Clubs más cercanos",
-            color = Color.White,
-            fontFamily = robotoBold,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
-        LazyColumn(modifier = Modifier
-            .fillMaxSize()
+    Text(
+        text = "Clubs más cercanos",
+        color = Color.White,
+        fontFamily = robotoBold,
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+    )
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxHeight()
             .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
-        ){
-            items(clubList) { club ->
-                ClubItem(club = club)
-            }
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        items(clubList) { club ->
+            ClubItem(club = club)
         }
     }
 
@@ -150,7 +160,7 @@ fun LocationClubs(clubList: List<ClubsListResponse>) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(){
+fun TopBar() {
     val colorVerde = colorResource(id = R.color.verdeApp)
     Row(
         modifier = Modifier
@@ -171,7 +181,7 @@ fun TopBar(){
         )
 
         IconButton(
-            onClick = {  }
+            onClick = { }
         ) {
             Icon(
                 imageVector = Icons.Filled.Settings,
@@ -183,35 +193,44 @@ fun TopBar(){
 }
 
 @Composable
-fun BottomBar(){
+fun BottomBar() {
     var index by remember {
         mutableStateOf(0)
     }
     val colorgrisicons = colorResource(id = R.color.grisicons)
     val colorVerde = colorResource(id = R.color.verdeApp)
 
-    Box{
+    Box {
 
-        NavigationBar(containerColor = Color.Black,contentColor = colorgrisicons, modifier = Modifier.padding(top = 2.dp)) {
+        NavigationBar(
+            containerColor = Color.Black,
+            contentColor = colorgrisicons,
+            modifier = Modifier.padding(top = 2.dp)
+        ) {
             NavigationBarItem(selected = index == 0, onClick = { index = 0 }, icon = {
                 Icon(
                     imageVector = Icons.Default.Home,
                     contentDescription = "home"
-                ) },
+                )
+            },
                 colors = NavigationBarItemDefaults.colors(
                     selectedIconColor = colorVerde,
                     unselectedIconColor = colorgrisicons,
                     indicatorColor = Color.Black
-                ))
-            NavigationBarItem(selected = index == 1, onClick = { index = 1 }, icon = { Icon(
-                imageVector = Icons.Default.ChatBubble,
-                contentDescription = "social"
-            ) },
+                )
+            )
+            NavigationBarItem(selected = index == 1, onClick = { index = 1 }, icon = {
+                Icon(
+                    imageVector = Icons.Default.ChatBubble,
+                    contentDescription = "social"
+                )
+            },
                 colors = NavigationBarItemDefaults.colors(
                     selectedIconColor = colorVerde,
                     unselectedIconColor = colorgrisicons,
                     indicatorColor = Color.Black
-                ))
+                )
+            )
         }
 
         Divider(color = colorVerde, thickness = 1.dp, modifier = Modifier.fillMaxWidth())
