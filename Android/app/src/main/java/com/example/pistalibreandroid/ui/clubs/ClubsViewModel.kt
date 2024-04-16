@@ -22,19 +22,24 @@ class ClubsViewModel @Inject constructor(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
+    // Inicializamos el bloque que llama a getAllClubs al crear el ViewModel
     init {
         getAllClubs()
     }
+
+    // Función para cargar todos los clubs
     fun getAllClubs(){
+        // Lanzamos una coroutina dentro del alcance del ViewModel
         viewModelScope.launch {
             _isLoading.value = true
             val response = repository.getAllClubs()
             if(response.isSuccessful){
+                // Si la respuesta es exitosa, actualizamos el flujo de lista de clubs
                 _clubsList.value = response.body() ?: listOf()
             }else {
 
             }
-            _isLoading.value = false
+            _isLoading.value = false // Indicamos que el proceso de carga ha finalizado
         }
     }
 }

@@ -33,25 +33,30 @@ class LoginViewModel @Inject constructor(
     val state: StateFlow<ResponseState> = _state
 
 
+    // Función que llamamos para cuando los inputs de login cambian
     fun onLoginChanged(email: String, password: String) {
         _email.value = email
         _password.value = password
+        // Actualizamos el estado de habilitación del botón de login basado en la validez del email y la longitud de la contraseña
         _isLoginEnable.value = enableLogin(email, password)
     }
 
     fun enableLogin(email: String, password: String) =
         Patterns.EMAIL_ADDRESS.matcher(email).matches() && password.length > 5
 
+    // Función llamada cuando se selecciona la opción de login
     fun onLoginSelected() {
         viewModelScope.launch {
             _state.value = ResponseLoading()
             val result = repository.login(email.value, password.value)
             
             if (result.isSuccessful) {
+                // Si el login es exitoso, guardamos el token y actualizamos el estado a Ok
                 repository.setToken(result.body()!!)
                 _state.value = ResponseOk(Unit)
 
             } else {
+                // Si el login falla, actualizamos el estado a Error
                 _state.value = ResponseError(result.body()!!)
             }
         }
