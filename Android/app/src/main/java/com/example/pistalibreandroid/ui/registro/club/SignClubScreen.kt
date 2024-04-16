@@ -36,6 +36,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
@@ -54,21 +56,28 @@ import com.example.pistalibreandroid.ui.theme.angkorFamily
 fun SignClubScreen(
     signClubViewModel: SignClubViewModel
 ) {
+    val colorgrisoscuro = colorResource(id = R.color.grisoscuro)
+    val gradient = Brush.linearGradient(
+        0f to Color.Black,
+        0.30f to Color.Black,
+        1f to colorgrisoscuro,
+        start = Offset(0f, 0f),
+        end = Offset(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY)
+    )
     Box(
         Modifier
             .fillMaxSize()
-            .background(color = Color.Black)
+            .background(brush = gradient)
             .padding(8.dp)
     ) {
         Column(Modifier.align(Alignment.TopCenter)) {
             HeaderSignClub(
                 Modifier
-                    .padding(32.dp)
+                    .padding(10.dp)
             )
-            Spacer(modifier = Modifier.height(16.dp))
             BodySignClub(
                 Modifier
-                    .padding(top = 16.dp)
+                    .padding(top = 1.dp)
                     .align(Alignment.CenterHorizontally), signClubViewModel
             )
         }
@@ -124,29 +133,34 @@ fun BodySignClub(modifier: Modifier, signClubViewModel: SignClubViewModel) {
     var repeatpasswordclub by rememberSaveable { mutableStateOf("") }
 
     Column(modifier = modifier.width(300.dp)) {
-        ClubName(clubName) { signClubViewModel.onSignClubChanged(email = email, password = password, clubName = it) }
+        ClubName(clubName, { signClubViewModel.onSignClubChanged(email = email, password = password, clubName = it) }
+            , modifier = Modifier.align(Alignment.CenterHorizontally))
         Spacer(modifier = Modifier.size(16.dp))
-        DirectionClub(directionClub) { signClubViewModel.onSignClubChanged(email = email, password = password, directionClub = it) }
+        DirectionClub(directionClub, { signClubViewModel.onSignClubChanged(email = email, password = password, directionClub = it) }
+            , modifier = Modifier.align(Alignment.CenterHorizontally))
         Spacer(modifier = Modifier.size(16.dp))
-        Email(email) { signClubViewModel.onSignClubChanged(email = it, password = password) }
+        Email(email, { signClubViewModel.onSignClubChanged(email = it, password = password) }
+            , modifier = Modifier.align(Alignment.CenterHorizontally))
         Spacer(modifier = Modifier.size(16.dp))
-        Password(password) { signClubViewModel.onSignClubChanged(email = email, password = it) }
+        Password(password, { signClubViewModel.onSignClubChanged(email = email, password = it) }
+            , modifier = Modifier.align(Alignment.CenterHorizontally))
         Spacer(modifier = Modifier.size(16.dp))
-        RepeatPasswordClub(repeatpasswordclub) { repeatpasswordclub = it }
+        RepeatPasswordClub(repeatpasswordclub, { repeatpasswordclub = it }
+            , modifier = Modifier.align(Alignment.CenterHorizontally))
         Spacer(modifier = Modifier.size(48.dp))
-        SingUpClubButton(signClubEnable, signClubViewModel)
+        SingUpClubButton(signClubEnable, signClubViewModel, modifier = Modifier.width(150.dp).align(Alignment.CenterHorizontally))
 
     }
 }
 
 
 @Composable
-fun SingUpClubButton(signClubEnable: Boolean, signClubViewModel: SignClubViewModel) {
+fun SingUpClubButton(signClubEnable: Boolean, signClubViewModel: SignClubViewModel, modifier: Modifier = Modifier) {
     val colorVerde = colorResource(id = R.color.verdeApp)
     Button(
         onClick = { signClubViewModel.onSignUpClubSelected() },
         enabled = signClubEnable,
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         colors = ButtonDefaults.buttonColors(
             containerColor = colorVerde,
             disabledContainerColor = Color(0x689DAC84),
@@ -161,12 +175,12 @@ fun SingUpClubButton(signClubEnable: Boolean, signClubViewModel: SignClubViewMod
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DirectionClub(directionClub: String, onTextChanged: (String) -> Unit) {
+fun DirectionClub(directionClub: String, onTextChanged: (String) -> Unit, modifier: Modifier = Modifier) {
     TextField(
         value = directionClub,
         onValueChange = { onTextChanged(it) },
-        modifier = Modifier.fillMaxWidth(),
-        placeholder = { Text(text = "Dirección completa") },
+        modifier = modifier.width(300.dp).height(45.dp),
+        placeholder = { Text(text = "Dirección completa", fontSize = 14.sp, color = Color.Gray) },
         maxLines = 1,
         singleLine = true,
         colors = TextFieldDefaults.textFieldColors(
@@ -181,12 +195,12 @@ fun DirectionClub(directionClub: String, onTextChanged: (String) -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ClubName(clubName: String, onTextChanged: (String) -> Unit) {
+fun ClubName(clubName: String, onTextChanged: (String) -> Unit, modifier: Modifier = Modifier) {
     TextField(
         value = clubName,
         onValueChange = { onTextChanged(it) },
-        modifier = Modifier.fillMaxWidth(),
-        placeholder = { Text(text = "Nombre del club") },
+        modifier = modifier.width(300.dp).height(45.dp),
+        placeholder = { Text(text = "Nombre del club", fontSize = 14.sp, color = Color.Gray) },
         maxLines = 1,
         singleLine = true,
         colors = TextFieldDefaults.textFieldColors(
@@ -201,12 +215,12 @@ fun ClubName(clubName: String, onTextChanged: (String) -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Email(email: String, onTextChanged: (String) -> Unit) {
+fun Email(email: String, onTextChanged: (String) -> Unit, modifier: Modifier = Modifier) {
     TextField(
         value = email,
         onValueChange = { onTextChanged(it) },
-        modifier = Modifier.fillMaxWidth(),
-        placeholder = { Text(text = "Correo electrónico") },
+        modifier = modifier.width(300.dp).height(45.dp),
+        placeholder = { Text(text = "Correo electrónico", fontSize = 14.sp, color = Color.Gray) },
         maxLines = 1,
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
@@ -222,13 +236,13 @@ fun Email(email: String, onTextChanged: (String) -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Password(password: String, onTextChanged: (String) -> Unit) {
+fun Password(password: String, onTextChanged: (String) -> Unit, modifier: Modifier = Modifier) {
     var passwordVisibility by remember { mutableStateOf(false) }
     TextField(
         value = password,
         onValueChange = { onTextChanged(it) },
-        modifier = Modifier.fillMaxWidth(),
-        placeholder = { Text(text = "Contraseña") },
+        modifier = modifier.width(300.dp).height(45.dp),
+        placeholder = { Text(text = "Contraseña", fontSize = 14.sp, color = Color.Gray) },
         maxLines = 1,
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -259,13 +273,13 @@ fun Password(password: String, onTextChanged: (String) -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RepeatPasswordClub(repeatpasswordclub: String, onTextChanged: (String) -> Unit) {
+fun RepeatPasswordClub(repeatpasswordclub: String, onTextChanged: (String) -> Unit, modifier: Modifier = Modifier) {
     var passwordVisibility by remember { mutableStateOf(false) }
     TextField(
         value = repeatpasswordclub,
         onValueChange = { onTextChanged(it) },
-        modifier = Modifier.fillMaxWidth(),
-        placeholder = { Text(text = "Repetir contraseña") },
+        modifier = modifier.width(300.dp).height(45.dp),
+        placeholder = { Text(text = "Repetir contraseña", fontSize = 14.sp, color = Color.Gray) },
         maxLines = 1,
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),

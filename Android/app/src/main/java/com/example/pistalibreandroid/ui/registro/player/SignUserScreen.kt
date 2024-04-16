@@ -36,6 +36,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
@@ -58,10 +60,18 @@ import com.example.pistalibreandroid.ui.theme.angkorFamily
 fun SignUserScreen(
     signUserViewModel: SignUserViewModel
 ){
+    val colorgrisoscuro = colorResource(id = R.color.grisoscuro)
+    val gradient = Brush.linearGradient(
+        0f to Color.Black,
+        0.30f to Color.Black,
+        1f to colorgrisoscuro,
+        start = Offset(0f, 0f),
+        end = Offset(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY)
+    )
     Box(
         Modifier
             .fillMaxSize()
-            .background(color = Color.Black)
+            .background(brush = gradient)
             .padding(8.dp)
     ){
         val state: ResponseState by signUserViewModel.state.collectAsState()
@@ -82,11 +92,10 @@ fun SignUserScreen(
                 Column(Modifier.align(Alignment.TopCenter)) {
                     HeaderSignUser(
                         Modifier
-                            .padding(32.dp))
-                    Spacer(modifier = Modifier.height(16.dp))
+                            .padding(10.dp))
                     BodySignUser(
                         Modifier
-                            .padding(top = 16.dp)
+                            .padding(top = 1.dp)
                             .align(Alignment.CenterHorizontally), signUserViewModel)
                 }
                 FooterUserSign(Modifier.align(Alignment.BottomCenter))
@@ -113,26 +122,31 @@ fun BodySignUser(modifier: Modifier, signUserViewModel: SignUserViewModel) {
     var repeatpassword by rememberSaveable { mutableStateOf("") }
 
     Column(modifier = modifier.width(300.dp)) {
-        FullName(fullName) { signUserViewModel.onUserSignChanged(email = email, password = password, fullname = it) }
+        FullName(fullName, { signUserViewModel.onUserSignChanged(email = email, password = password, fullname = it) }
+            , modifier = Modifier.align(Alignment.CenterHorizontally))
         Spacer(modifier = Modifier.size(16.dp))
-        UserName(userName) { signUserViewModel.onUserSignChanged(email = email, password = password, username = it) }
+        UserName(userName, { signUserViewModel.onUserSignChanged(email = email, password = password, username = it) }
+            , modifier = Modifier.align(Alignment.CenterHorizontally))
         Spacer(modifier = Modifier.size(16.dp))
-        Email(email) { signUserViewModel.onUserSignChanged(email = it, password = password) }
+        Email(email, { signUserViewModel.onUserSignChanged(email = it, password = password) }
+            , modifier = Modifier.align(Alignment.CenterHorizontally))
         Spacer(modifier = Modifier.size(16.dp))
-        RepeatPassword(repeatpassword) { repeatpassword = it}
+        Password(password, { signUserViewModel.onUserSignChanged(email = email, password = it)}
+            , modifier = Modifier.align(Alignment.CenterHorizontally))
         Spacer(modifier = Modifier.size(16.dp))
-        Password(password) { signUserViewModel.onUserSignChanged(email = email, password = it)}
+        RepeatPassword(repeatpassword, { repeatpassword = it}
+            , modifier = Modifier.align(Alignment.CenterHorizontally))
         Spacer(modifier = Modifier.size(48.dp))
-        RegisterButton(isRegisterEnable, signUserViewModel)
+        RegisterButton(isRegisterEnable, signUserViewModel, modifier = Modifier.width(150.dp).align(Alignment.CenterHorizontally))
     }
 }
 
 @Composable
-fun RegisterButton(registerEnable: Boolean, signUserViewModel: SignUserViewModel) {
+fun RegisterButton(registerEnable: Boolean, signUserViewModel: SignUserViewModel, modifier: Modifier = Modifier) {
     val colorVerde = colorResource(id = R.color.verdeApp)
     Button(onClick = { signUserViewModel.onSignUpSelected()},
         enabled = registerEnable,
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         colors = ButtonDefaults.buttonColors(
             containerColor = colorVerde,
             disabledContainerColor = Color(0x689DAC84),
@@ -147,11 +161,11 @@ fun RegisterButton(registerEnable: Boolean, signUserViewModel: SignUserViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FullName(fullName:String, onTextChanged: (String) -> Unit) {
+fun FullName(fullName:String, onTextChanged: (String) -> Unit, modifier: Modifier = Modifier) {
     TextField(value = fullName,
         onValueChange = { onTextChanged(it) },
-        modifier = Modifier.fillMaxWidth(),
-        placeholder = { Text(text = "Nombre completo")},
+        modifier = modifier.width(300.dp).height(45.dp),
+        placeholder = { Text(text = "Nombre completo", fontSize = 14.sp, color = Color.Gray)},
         maxLines = 1,
         singleLine = true,
         colors = TextFieldDefaults.textFieldColors(
@@ -165,11 +179,11 @@ fun FullName(fullName:String, onTextChanged: (String) -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UserName(userName:String, onTextChanged: (String) -> Unit) {
+fun UserName(userName:String, onTextChanged: (String) -> Unit, modifier: Modifier = Modifier) {
     TextField(value = userName,
         onValueChange = { onTextChanged(it) },
-        modifier = Modifier.fillMaxWidth(),
-        placeholder = { Text(text = "Nombre de usuario")},
+        modifier = modifier.width(300.dp).height(45.dp),
+        placeholder = { Text(text = "Nombre de usuario", fontSize = 14.sp, color = Color.Gray)},
         maxLines = 1,
         singleLine = true,
         colors = TextFieldDefaults.textFieldColors(
@@ -184,13 +198,13 @@ fun UserName(userName:String, onTextChanged: (String) -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Password(password:String, onTextChanged: (String) -> Unit) {
+fun Password(password:String, onTextChanged: (String) -> Unit, modifier: Modifier = Modifier) {
     var passwordVisibility by remember { mutableStateOf(false) }
     
     TextField(value = password,
         onValueChange = { onTextChanged(it) },
-        modifier = Modifier.fillMaxWidth(),
-        placeholder = { Text(text = "Contraseña")},
+        modifier = modifier.width(300.dp).height(45.dp),
+        placeholder = { Text(text = "Contraseña", fontSize = 14.sp, color = Color.Gray)},
         maxLines = 1,
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -221,12 +235,12 @@ fun Password(password:String, onTextChanged: (String) -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RepeatPassword(repeatpassword:String, onTextChanged: (String) -> Unit) {
+fun RepeatPassword(repeatpassword:String, onTextChanged: (String) -> Unit, modifier: Modifier = Modifier) {
     var passwordVisibility by remember { mutableStateOf(false) }
     TextField(value = repeatpassword,
         onValueChange = { onTextChanged(it) },
-        modifier = Modifier.fillMaxWidth(),
-        placeholder = { Text(text = "Repetir contraseña")},
+        modifier = modifier.width(300.dp).height(45.dp),
+        placeholder = { Text(text = "Repetir contraseña", fontSize = 14.sp, color = Color.Gray)},
         maxLines = 1,
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -256,11 +270,11 @@ fun RepeatPassword(repeatpassword:String, onTextChanged: (String) -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Email(email:String, onTextChanged: (String) -> Unit) {
+fun Email(email:String, onTextChanged: (String) -> Unit, modifier: Modifier = Modifier) {
     TextField(value = email,
         onValueChange = { onTextChanged(it) },
-        modifier = Modifier.fillMaxWidth(),
-        placeholder = { Text(text = "Correo electrónico")},
+        modifier = modifier.width(300.dp).height(45.dp),
+        placeholder = { Text(text = "Correo electrónico", fontSize = 14.sp, color = Color.Gray)},
         maxLines = 1,
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
