@@ -1,10 +1,14 @@
 package com.example.pistalibreandroid.data.network.apis
 
+import com.example.pistalibreandroid.data.network.request.ClubCourtConfigRequest
 import com.example.pistalibreandroid.data.network.request.ClubCreateRequest
+import com.example.pistalibreandroid.data.network.request.UserConfigRequest
 import com.example.pistalibreandroid.data.network.request.UserCreateRequest
+import com.example.pistalibreandroid.data.network.response.ClubsListResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
 
@@ -24,5 +28,25 @@ interface PistaLibreApi {
     @POST("/auth/club/sign-up")
     suspend fun singUpClub(
         @Body clubCreateRequest: ClubCreateRequest
+    ): Response<Unit>
+
+    @GET("/club/all")
+    suspend fun getClubs(
+        @Header("Authorization") token:String
+    ) : Response<List<ClubsListResponse>>
+
+
+    @POST("/config/user")
+    suspend fun configUser(
+        @Header(value = "Authorization") token: String,
+        @Body userConfigRequest: UserConfigRequest
+    ): Response<Unit>
+
+    @POST("/config/club")
+    suspend fun configClub(
+        @Header(value = "Authorization") token: String,
+        @Query("name") name: String,
+        @Query("location") location: String,
+        @Body clubCourtConfigRequest: List<ClubCourtConfigRequest>
     ): Response<Unit>
 }

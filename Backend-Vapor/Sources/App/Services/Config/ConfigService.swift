@@ -68,4 +68,26 @@ final class ConfigService {
         
         return Response(status: .ok)
     }
+    
+    func infoUser(req: Request) async throws -> Response {
+        let idUser = try security.checkAuthUser(req: req)
+        
+        let user = try await userRepository.getById(db: req.db, id: idUser)
+        
+        return try Response(
+            status: .ok,
+            body: Response.Body(data: JSONEncoder().encode(user))
+        )
+    }
+    
+    func infoClub(req: Request) async throws -> Response {
+        let idClub = try security.checkAuthClub(req: req)
+        
+        let club = try await clubRepository.getById(db: req.db, id: idClub)
+        
+        return try Response(
+            status: .ok,
+            body: Response.Body(data: JSONEncoder().encode(club))
+        )
+    }
 }

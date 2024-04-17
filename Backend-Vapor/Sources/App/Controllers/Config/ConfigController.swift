@@ -12,6 +12,12 @@ class ConfigController: RouteCollection {
         
         // config/user
         config.post("user", use: configService.user)
+        
+        // config/user/info
+        config.get("user","info", use: configService.infoUser)
+        
+        // config/user/info
+        config.get("club","info", use: configService.infoClub)
     }
     
 }

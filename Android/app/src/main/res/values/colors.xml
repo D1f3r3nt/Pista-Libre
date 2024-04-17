@@ -9,4 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="verdeApp">#92D024</color>
     <color name="grisclaro">#ED707070</color>
+    <color name="grisoscuro">#2C2C2C</color>
+    <color name="grisicons">#A4A4A4</color>
+    <color name="gristop">#FF262626</color>
 </resources>
