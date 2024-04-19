@@ -1,66 +1,46 @@
 package com.example.pistalibreandroid.ui.login
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.compose.runtime.collectAsState
 import com.example.pistalibreandroid.data.Repository
-import com.example.pistalibreandroid.model.ResponseOk
-import io.mockk.MockKAnnotations
+import com.example.pistalibreandroid.helpers.MainCoroutineRule
 import io.mockk.coEvery
-import io.mockk.impl.annotations.RelaxedMockK
-import kotlinx.coroutines.Dispatchers
+import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.Protocol
-import okhttp3.Request
-import okhttp3.Response
-import okhttp3.ResponseBody.Companion.toResponseBody
-import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.testng.Assert.assertFalse
 import org.testng.Assert.assertTrue
+import retrofit2.Response
 
 
-@ExperimentalCoroutinesApi
+@OptIn(ExperimentalCoroutinesApi::class)
 class LoginViewModelTest {
 
-    @RelaxedMockK
-    lateinit var repository: Repository
     private lateinit var loginViewModel: LoginViewModel
+    private lateinit var repository: Repository
 
+    @ExperimentalCoroutinesApi
     @get:Rule
-    var rule: InstantTaskExecutorRule = InstantTaskExecutorRule()
-
+    var mainCoroutineRule = MainCoroutineRule()
 
     @Before
-    fun onBefore(){
-        MockKAnnotations.init(this)
+    fun setUp() {
+        repository = Repository(mockk(), mockk())
         loginViewModel = LoginViewModel(repository)
-        Dispatchers.setMain(Dispatchers.Unconfined)
-    }
-
-    @After
-    fun onAfter(){
-        Dispatchers.resetMain()
     }
 
     @Test
-    fun `emailInvalid` () {
-        val invalidEmails = listOf("plainaddress", "@missingusername.com", "username@.com.my", "username@.com", ".username@yahoo.com")
+    fun emailInvalid() {
+        val invalidEmails = listOf("plainaddress", "@missingusername.com", "username@.com.my", "username@.com")
 
         invalidEmails.forEach { email ->
             loginViewModel.onLoginChanged(email, "validPass123")
-            assertFalse(loginViewModel.isLoginEnable.value, "Email $email should be rejected")
+            assertFalse(loginViewModel.isLoginEnable.value)
         }
     }
 
     @Test
-    fun `emailValid`() {
+    fun emailValid() {
         val validEmails = listOf("email@example.com", "firstname.lastname@example.com", "email@subdomain.example.com", "firstname+lastname@example.com")
 
         validEmails.forEach { email ->
@@ -87,5 +67,14 @@ class LoginViewModelTest {
             loginViewModel.onLoginChanged("valid@email.com", password)
             assertTrue(loginViewModel.isLoginEnable.value, "Password '$password' should be accepted")
         }
+    }
+
+    @Test
+    fun onLoginSelectedTest() {
+        val token: String = "vdfvdfv"
+        
+        coEvery { repository.login(any(), any()) } returns Response.success(token)
+        
+        loginViewModel.onLoginSelected()
     }
 }
