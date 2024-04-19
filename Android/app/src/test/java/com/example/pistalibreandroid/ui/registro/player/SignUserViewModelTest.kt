@@ -1,4 +1,4 @@
-package com.example.pistalibreandroid.ui.login
+package com.example.pistalibreandroid.ui.registro.player
 
 import com.example.pistalibreandroid.data.Repository
 import com.example.pistalibreandroid.helpers.MainCoroutineRule
@@ -8,15 +8,13 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.testng.Assert.assertFalse
-import org.testng.Assert.assertTrue
+import org.testng.Assert
 import retrofit2.Response
 
-
 @OptIn(ExperimentalCoroutinesApi::class)
-class LoginViewModelTest {
+class SignUserViewModelTest {
 
-    private lateinit var loginViewModel: LoginViewModel
+    private lateinit var signUserViewModel: SignUserViewModel
     private lateinit var repository: Repository
 
     @ExperimentalCoroutinesApi
@@ -26,7 +24,7 @@ class LoginViewModelTest {
     @Before
     fun setUp() {
         repository = Repository(mockk(), mockk())
-        loginViewModel = LoginViewModel(repository)
+        signUserViewModel = SignUserViewModel(repository)
     }
 
     @Test
@@ -34,8 +32,8 @@ class LoginViewModelTest {
         val invalidEmails = listOf("plainaddress", "@missingusername.com", "username@.com.my", "username@.com")
 
         invalidEmails.forEach { email ->
-            loginViewModel.onLoginChanged(email, "validPass123")
-            assertFalse(loginViewModel.isLoginEnable.value)
+            signUserViewModel.onUserSignChanged(email = email, password = "validPassword123")
+            Assert.assertFalse(signUserViewModel.isUserSignEnable.value)
         }
     }
 
@@ -44,8 +42,8 @@ class LoginViewModelTest {
         val validEmails = listOf("email@example.com", "firstname.lastname@example.com", "email@subdomain.example.com", "firstname+lastname@example.com")
 
         validEmails.forEach { email ->
-            loginViewModel.onLoginChanged(email, "validPass123")
-            assertTrue(loginViewModel.isLoginEnable.value)
+            signUserViewModel.onUserSignChanged(email = email, password = "validPassword123")
+            Assert.assertTrue(signUserViewModel.isUserSignEnable.value)
         }
     }
 
@@ -54,8 +52,8 @@ class LoginViewModelTest {
         val invalidPasswords = listOf("", "abc", "12345")
 
         invalidPasswords.forEach { password ->
-            loginViewModel.onLoginChanged("valid@email.com", password)
-            assertFalse(loginViewModel.isLoginEnable.value)
+            signUserViewModel.onUserSignChanged(email = "valid@email.com", password = password)
+            Assert.assertFalse(signUserViewModel.isUserSignEnable.value)
         }
     }
 
@@ -64,17 +62,15 @@ class LoginViewModelTest {
         val validPasswords = listOf("123456", "abcdef", "123456789")
 
         validPasswords.forEach { password ->
-            loginViewModel.onLoginChanged("valid@email.com", password)
-            assertTrue(loginViewModel.isLoginEnable.value)
+            signUserViewModel.onUserSignChanged(email = "valid@email.com", password = password)
+            Assert.assertTrue(signUserViewModel.isUserSignEnable.value)
         }
     }
 
     @Test
-    fun onLoginSelectedTest() {
-        val token: String = "vdfvdfv"
-        
-        coEvery { repository.login(any(), any()) } returns Response.success(token)
-        
-        loginViewModel.onLoginSelected()
+    fun onSignUpSelectedTest() {
+        coEvery { repository.singUpUser(any(), any(), any(), any()) } returns Response.success(null)
+
+        signUserViewModel.onSignUpSelected()
     }
 }
