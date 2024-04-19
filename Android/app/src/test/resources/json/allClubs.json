@@ -1,0 +1,32 @@
+[
+  {
+    "id": 2,
+    "location": "Calle poligono de cabra",
+    "name": "Club Olimpo"
+  },
+  {
+    "id": 5,
+    "location": "Avenida andalucia cabra cordoba",
+    "name": "Club padel Andalucia"
+  },
+  {
+    "id": 1,
+    "location": "Super nave",
+    "name": "Super Club 2"
+  },
+  {
+    "id": 10,
+    "location": "---",
+    "name": "Super Club 78"
+  },
+  {
+    "id": 11,
+    "location": "Prueba club",
+    "name": "Prueba club"
+  },
+  {
+    "id": 12,
+    "location": "Drag",
+    "name": "Serb"
+  }
+]

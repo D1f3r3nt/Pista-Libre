@@ -1,6 +1,6 @@
 package com.example.pistalibreandroid.ui.registro.club
 
-import android.util.Patterns
+import androidx.core.util.PatternsCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pistalibreandroid.data.Repository
@@ -44,7 +44,7 @@ class SignClubViewModel @Inject constructor(
     }
 
     private fun enableSignClub(email: String, password: String) =
-        Patterns.EMAIL_ADDRESS.matcher(email).matches() && password.length > 5
+        PatternsCompat.EMAIL_ADDRESS.matcher(email).matches() && password.length > 5
 
     fun onSignUpClubSelected() {
         viewModelScope.launch {

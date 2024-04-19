@@ -36,7 +36,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "1.8"
     }
     buildFeatures {
         compose = true
@@ -73,21 +73,21 @@ dependencies {
 
     // Dagger Hilt
     implementation("com.google.dagger:hilt-android:2.46.1")
-    androidTestImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
     kapt("com.google.dagger:hilt-compiler:2.46.1")
 
     // Navigation
-    implementation("androidx.navigation:navigation-compose:2.7.7")
+    implementation("androidx.navigation:navigation-compose:2.7.6")
 
     // Async Image
     implementation("io.coil-kt:coil-compose:2.4.0")
 
+    // Tests
     testImplementation("junit:junit:4.13.2")
     testImplementation("com.squareup.okhttp3:mockwebserver:4.2.1")
     testImplementation("org.testng:testng:6.9.6")
     testImplementation("androidx.arch.core:core-testing:2.2.0")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
-    testImplementation("io.mockk:mockk:1.13.10")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.0")
+    testImplementation("io.mockk:mockk:1.12.2")
     testImplementation("com.google.truth:truth:1.0")
 
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -97,15 +97,4 @@ dependencies {
 
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
-
-    //Tests
-    testImplementation("org.junit.jupiter:junit-jupiter:5.7.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.0")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.6.5")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.6.5")
-    testImplementation("io.mockk:mockk:1.13.10")
-    androidTestImplementation("io.mockk:mockk-android:1.13.10")
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
-
 }

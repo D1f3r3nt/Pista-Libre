@@ -2,6 +2,8 @@ package com.example.pistalibreandroid.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.example.pistalibreandroid.data.local.LocalDataSource
+import com.example.pistalibreandroid.data.local.LocalDataSourceInterface
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,5 +19,10 @@ class LocalModule {
     @Provides
     fun providesSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
         return context.getSharedPreferences(FILE_PREFERENCE, Context.MODE_PRIVATE)
+    }
+    
+    @Provides
+    fun providesLocalDataSource(localDataSource: LocalDataSource): LocalDataSourceInterface {
+        return localDataSource
     }
 }

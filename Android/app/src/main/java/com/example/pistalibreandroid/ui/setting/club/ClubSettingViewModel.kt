@@ -40,7 +40,7 @@ class ClubSettingViewModel @Inject constructor(
         _isConfigEnable.value = enableConfig(name, direction)
     }
 
-    fun enableConfig(name: String, direction: String) = name.length > 1 && direction.length > 1 && _courts.value.isNotEmpty()
+    private fun enableConfig(name: String, direction: String) = name.length > 1 && direction.length > 1 && _courts.value.isNotEmpty()
 
     fun addNewCourt() {
         val list = _courts.value.toMutableList()

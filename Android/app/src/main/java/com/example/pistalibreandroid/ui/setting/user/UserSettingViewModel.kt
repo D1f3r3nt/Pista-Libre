@@ -43,7 +43,7 @@ class UserSettingViewModel @Inject constructor(
         _sidePlay.value = sidePlay
     }
 
-    fun enableConfig(fullname: String, username: String) = fullname.length > 1 && username.length > 1
+    private fun enableConfig(fullname: String, username: String) = fullname.length > 1 && username.length > 1
     
     fun postConfig() {
         viewModelScope.launch {
