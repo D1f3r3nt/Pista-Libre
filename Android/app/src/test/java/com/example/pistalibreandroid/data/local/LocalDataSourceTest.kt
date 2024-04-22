@@ -34,4 +34,20 @@ class LocalDataSourceTest {
         localDataSource.setToken(token)
     }
 
+    @Test
+    fun `WHEN getTypeUser THEN success`() {
+        every { preferencesDatabase.getData(any()) } returns token
+
+        val actual = localDataSource.getTypeUser()
+
+        assertEquals(actual, token)
+    }
+
+    @Test
+    fun `WHEN setTypeUser THEN success`() {
+        every { preferencesDatabase.setData(any(), any()) } returns Unit
+
+        localDataSource.setTypeUser(token)
+    }
+
 }

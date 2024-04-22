@@ -4,6 +4,7 @@ import com.example.pistalibreandroid.data.local.LocalDataSourceInterface
 import com.example.pistalibreandroid.data.network.NetworkDataSource
 import com.example.pistalibreandroid.data.network.response.ClubsListResponse
 import com.example.pistalibreandroid.data.network.request.ClubCourtConfigRequest
+import com.example.pistalibreandroid.data.network.response.CheckTokenResponse
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -111,6 +112,15 @@ class Repository @Inject constructor(
     }
 
     /**
+     * Método para obtener si es user o club
+     *
+     * @return Response<CheckTokenResponse>
+     */
+    suspend fun checkToken(): Response<CheckTokenResponse> {
+        return networkDataSource.checkToken(getToken() ?: "")
+    }
+
+    /**
      * Función para obtener el token de la fuente de datos local
      * 
      * @return String?
@@ -128,5 +138,25 @@ class Repository @Inject constructor(
     fun setToken(value: String) {
         // Guarda el nuevo token en la fuente de datos local
         localDataSource.setToken(value)
+    }
+
+    /**
+     * Función para obtener el user type de la fuente de datos local
+     *
+     * @return String?
+     */
+    fun getTypeUser(): String? {
+        // Recupera el token guardado en la fuente de datos local
+        return localDataSource.getTypeUser()
+    }
+
+    /**
+     * Función para establecer un nuevo user type en la fuente de datos local
+     *
+     * @param value String
+     */
+    fun setTypeUser(value: String) {
+        // Guarda el nuevo token en la fuente de datos local
+        localDataSource.setTypeUser(value)
     }
 }

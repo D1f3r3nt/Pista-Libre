@@ -28,6 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -47,9 +48,14 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pistalibreandroid.R
+import com.example.pistalibreandroid.model.ResponseError
+import com.example.pistalibreandroid.model.ResponseLoading
+import com.example.pistalibreandroid.model.ResponseOk
+import com.example.pistalibreandroid.model.ResponseState
 import com.example.pistalibreandroid.ui.navigation.Navigation
 import com.example.pistalibreandroid.ui.navigation.NavigationController
 import com.example.pistalibreandroid.ui.theme.angkorFamily
+import kotlinx.coroutines.delay
 
 
 @Composable
@@ -70,18 +76,44 @@ fun SignClubScreen(
             .background(brush = gradient)
             .padding(8.dp)
     ) {
-        Column(Modifier.align(Alignment.TopCenter)) {
-            HeaderSignClub(
-                Modifier
-                    .padding(10.dp)
-            )
-            BodySignClub(
-                Modifier
-                    .padding(top = 1.dp)
-                    .align(Alignment.CenterHorizontally), signClubViewModel
-            )
+        val state: ResponseState by signClubViewModel.state.collectAsState()
+        val navController = NavigationController.controller()
+
+        when (state) {
+            is ResponseError -> {
+                Text(text = (state as ResponseError).msg)
+                LaunchedEffect(key1 = Unit) {
+                    delay(3000)
+                    signClubViewModel.resetState()
+                }
+            }
+            is ResponseLoading -> {
+                Box(
+                    Modifier
+                        .fillMaxSize()
+                        .align(Alignment.Center)){
+                    Text(text = "Loading")
+                }
+            }
+            is ResponseOk -> {
+                navController.navigate(Navigation.LOGIN_ROUTE)
+                signClubViewModel.resetState()
+            }
+            else -> {
+                Column(Modifier.align(Alignment.TopCenter)) {
+                    HeaderSignClub(
+                        Modifier
+                            .padding(10.dp)
+                    )
+                    BodySignClub(
+                        Modifier
+                            .padding(top = 1.dp)
+                            .align(Alignment.CenterHorizontally), signClubViewModel
+                    )
+                }
+                FooterSignClub(Modifier.align(Alignment.BottomCenter))
+            }
         }
-        FooterSignClub(Modifier.align(Alignment.BottomCenter))
     }
 }
 
@@ -179,7 +211,7 @@ fun DirectionClub(directionClub: String, onTextChanged: (String) -> Unit, modifi
     TextField(
         value = directionClub,
         onValueChange = { onTextChanged(it) },
-        modifier = modifier.width(300.dp).height(45.dp),
+        modifier = modifier.width(300.dp).height(55.dp),
         placeholder = { Text(text = "Dirección completa", fontSize = 14.sp, color = Color.Gray) },
         maxLines = 1,
         singleLine = true,
@@ -199,7 +231,7 @@ fun ClubName(clubName: String, onTextChanged: (String) -> Unit, modifier: Modifi
     TextField(
         value = clubName,
         onValueChange = { onTextChanged(it) },
-        modifier = modifier.width(300.dp).height(45.dp),
+        modifier = modifier.width(300.dp).height(55.dp),
         placeholder = { Text(text = "Nombre del club", fontSize = 14.sp, color = Color.Gray) },
         maxLines = 1,
         singleLine = true,
@@ -219,7 +251,7 @@ fun Email(email: String, onTextChanged: (String) -> Unit, modifier: Modifier = M
     TextField(
         value = email,
         onValueChange = { onTextChanged(it) },
-        modifier = modifier.width(300.dp).height(45.dp),
+        modifier = modifier.width(300.dp).height(55.dp),
         placeholder = { Text(text = "Correo electrónico", fontSize = 14.sp, color = Color.Gray) },
         maxLines = 1,
         singleLine = true,
@@ -241,7 +273,7 @@ fun Password(password: String, onTextChanged: (String) -> Unit, modifier: Modifi
     TextField(
         value = password,
         onValueChange = { onTextChanged(it) },
-        modifier = modifier.width(300.dp).height(45.dp),
+        modifier = modifier.width(300.dp).height(55.dp),
         placeholder = { Text(text = "Contraseña", fontSize = 14.sp, color = Color.Gray) },
         maxLines = 1,
         singleLine = true,
@@ -278,7 +310,7 @@ fun RepeatPasswordClub(repeatpasswordclub: String, onTextChanged: (String) -> Un
     TextField(
         value = repeatpasswordclub,
         onValueChange = { onTextChanged(it) },
-        modifier = modifier.width(300.dp).height(45.dp),
+        modifier = modifier.width(300.dp).height(55.dp),
         placeholder = { Text(text = "Repetir contraseña", fontSize = 14.sp, color = Color.Gray) },
         maxLines = 1,
         singleLine = true,

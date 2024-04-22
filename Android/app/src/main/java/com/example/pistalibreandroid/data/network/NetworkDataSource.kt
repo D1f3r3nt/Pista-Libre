@@ -5,6 +5,7 @@ import com.example.pistalibreandroid.data.network.request.ClubCourtConfigRequest
 import com.example.pistalibreandroid.data.network.request.ClubCreateRequest
 import com.example.pistalibreandroid.data.network.request.UserConfigRequest
 import com.example.pistalibreandroid.data.network.request.UserCreateRequest
+import com.example.pistalibreandroid.data.network.response.CheckTokenResponse
 import com.example.pistalibreandroid.data.network.response.ClubsListResponse
 import retrofit2.Response
 import javax.inject.Inject
@@ -118,6 +119,18 @@ class NetworkDataSource @Inject constructor(
     ): Response<Unit> {
         // Envía una solicitud de configuración de club a la API
         return api.configClub("Bearer $token", name, location, clubCourtConfigRequest)
+    }
+
+    /**
+     * Método para obtener si es user o club
+     * 
+     * @param token String
+     * @return Response<CheckTokenResponse>
+     */
+    suspend fun checkToken(
+        token: String,
+    ): Response<CheckTokenResponse> {
+        return api.checkToken("Bearer $token")
     }
 
 }

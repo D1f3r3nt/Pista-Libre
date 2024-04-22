@@ -30,6 +30,9 @@ class LoginViewModel @Inject constructor(
     val isLoginEnable: StateFlow<Boolean> = _isLoginEnable
     val state: StateFlow<ResponseState> = _state
 
+    fun resetState() {
+        _state.value = Idle()
+    }
 
     /**
      * Función que llamamos para cuando los inputs de login cambian
@@ -54,19 +57,34 @@ class LoginViewModel @Inject constructor(
      * Función llamada cuando se selecciona la opción de login
      */
     fun onLoginSelected() {
-        viewModelScope.launch {
-            _state.value = ResponseLoading()
+            viewModelScope.launch {
+                _state.value = ResponseLoading()
             val result = repository.login(email.value, password.value)
 
             if (result.isSuccessful) {
                 // Si el login es exitoso, guardamos el token y actualizamos el estado a Ok
                 repository.setToken(result.body()!!)
-                _state.value = ResponseOk(Unit)
+                
+                // Obtener si es user o club
+                getDataFromToken()
 
             } else {
                 // Si el login falla, actualizamos el estado a Error
                 _state.value = ResponseError(result.body()!!)
             }
+        }
+    }
+    
+    private suspend fun getDataFromToken() {
+        val resultToken = repository.checkToken()
+        
+        if (resultToken.isSuccessful) {
+            resultToken.body()?.let { repository.setTypeUser(it.type) }
+            
+            _state.value = ResponseOk(Unit)
+        } else {
+            // Si el login falla, actualizamos el estado a Error
+            _state.value = ResponseError("Error al obtener el tipo de user")
         }
     }
 
