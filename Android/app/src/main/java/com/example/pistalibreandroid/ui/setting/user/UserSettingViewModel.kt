@@ -33,6 +33,10 @@ class UserSettingViewModel @Inject constructor(
     val isConfigEnable: StateFlow<Boolean> = _isConfigEnable
     val state: StateFlow<ResponseState> = _state
 
+    fun resetState() {
+        _state.value = Idle()
+    }
+    
     fun onConfigChanged(fullname: String, username: String) {
         _fullname.value = fullname
         _username.value = username

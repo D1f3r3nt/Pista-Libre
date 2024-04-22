@@ -7,6 +7,7 @@ class LocalDataSource @Inject constructor(
 ): LocalDataSourceInterface {
     companion object {
         val TOKEN = "token_private"
+        val TYPE = "type_private"
     }
 
     /**
@@ -25,5 +26,21 @@ class LocalDataSource @Inject constructor(
     override fun setToken(value: String) {
         // Llamamos a setData de PreferencesDatabase para guardar el token con la clave TOKEN
         preferencesDatabase.setData(TOKEN, value)
+    }
+
+    /**
+     * Función para obtener el type de las preferencias
+     * @return String?
+     */
+    override fun getTypeUser(): String? {
+        return preferencesDatabase.getData(TYPE)
+    }
+
+    /**
+     * Función para establecer el type en las preferencias
+     * @param String
+     */
+    override fun setTypeUser(value: String) {
+        preferencesDatabase.setData(TYPE, value)
     }
 }

@@ -4,6 +4,7 @@ import com.example.pistalibreandroid.data.network.request.ClubCourtConfigRequest
 import com.example.pistalibreandroid.data.network.request.ClubCreateRequest
 import com.example.pistalibreandroid.data.network.request.UserConfigRequest
 import com.example.pistalibreandroid.data.network.request.UserCreateRequest
+import com.example.pistalibreandroid.data.network.response.CheckTokenResponse
 import com.example.pistalibreandroid.data.network.response.ClubsListResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -49,4 +50,9 @@ interface PistaLibreApi {
         @Query("location") location: String,
         @Body clubCourtConfigRequest: List<ClubCourtConfigRequest>
     ): Response<Unit>
+    
+    @GET("/auth/checkToken")
+    suspend fun checkToken(
+        @Header(value = "Authorization") token: String,
+    ): Response<CheckTokenResponse>
 }

@@ -44,4 +44,12 @@ class ClubsViewModel @Inject constructor(
             _isLoading.value = false // Indicamos que el proceso de carga ha finalizado
         }
     }
+    
+    fun navigateToSettings(): String? {
+        repository.getTypeUser()?.let { 
+            return it
+        }
+        
+        return null
+    }
 }

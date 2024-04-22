@@ -34,6 +34,10 @@ class ClubSettingViewModel @Inject constructor(
     val isConfigEnable: StateFlow<Boolean> = _isConfigEnable
     val state: StateFlow<ResponseState> = _state
 
+    fun resetState() {
+        _state.value = Idle()
+    }
+    
     fun onConfigChanged(name: String, direction: String) {
         _name.value = name
         _direction.value = direction

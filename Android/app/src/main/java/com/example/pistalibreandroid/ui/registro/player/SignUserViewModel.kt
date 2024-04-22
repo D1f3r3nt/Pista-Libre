@@ -34,6 +34,9 @@ class SignUserViewModel @Inject constructor(
     var isUserSignEnable : StateFlow<Boolean> = _isUserSignEnable
     val state: StateFlow<ResponseState> = _state
 
+    fun resetState() {
+        _state.value = Idle()
+    }
 
     /**
      * Funcion para setear los nuevos valores
@@ -60,9 +63,8 @@ class SignUserViewModel @Inject constructor(
             val result = repository.singUpUser(username.value, fullname.value, email.value, password.value)
             
             if(result.isSuccessful){
-                _state.value = ResponseOk(Unit)
                 
-                //Navegar a la pantalla de login
+                _state.value = ResponseOk(Unit)
             } else {
                 _state.value = ResponseError("Email or username already exists")
             }
