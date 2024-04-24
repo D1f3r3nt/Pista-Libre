@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct LoginView: View {
-    @State var emailTextField: String = "pablomaringallardo17@gmail.com"
-    @State var passwordTextField: String = "123456"
+    @State var emailTextField: String = ""
+    @State var passwordTextField: String = ""
     @Binding var viewModel: AuthViewModel
     @FocusState var focusPassword: Bool
     
@@ -23,8 +23,10 @@ struct LoginView: View {
                     HStack(spacing: 14) {
                         Text("Log")
                             .foregroundStyle(Color.whitePL)
+                            .id(1)
                         Text("In")
                             .foregroundStyle(Color.greenPL)
+                            .id(2)
                     }
                     .font(.customFont(name: .angkor, size: 48))
                     .padding(.top, 100)
@@ -37,6 +39,7 @@ struct LoginView: View {
                                 textField: $emailTextField,
                                 placeholder: "Correo electrónico",
                                 isPasswordField: false)
+                            .id(3)
                             
                             if focusPassword && !viewModel.checkEmail(email: emailTextField) {
                                 HStack {
@@ -71,6 +74,7 @@ struct LoginView: View {
                                 focusPassword: _focusPassword,
                                 placeholder: "Contraseña",
                                 isPasswordField: true)
+                            .id(4)
                             
                             
                             HStack {
@@ -100,6 +104,7 @@ struct LoginView: View {
                                 colorButton: Color.greenPL)
                         })
                         .padding(.top, 36)
+                        .id(5)
                     }
                     .padding(.horizontal, 48)
                     .animation(.snappy(duration: 0.4), value: viewModel.showError)
@@ -109,12 +114,14 @@ struct LoginView: View {
                     HStack {
                         Text("¿No tienes una cuenta?")
                             .foregroundStyle(Color.whitePL)
+                            .id(6)
                         
                         NavigationLink(
                             destination: ChooseRegistrationView(viewModel: $viewModel)) {
                                 Text("Crear una cuenta")
                                     .foregroundStyle(Color.greenPL)
                             }
+                            .id(7)
                     }
                     .padding(.bottom)
                     .navigationDestination(isPresented: $viewModel.isLogged) {

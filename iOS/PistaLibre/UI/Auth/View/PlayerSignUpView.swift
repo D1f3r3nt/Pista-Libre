@@ -43,8 +43,11 @@ struct PlayerSignUpView: View {
                     VStack(spacing: -40){
                         Text("Registro")
                             .foregroundStyle(Color.whitePL)
+                            .id(0)
+                        
                         Text("jugador")
                             .foregroundStyle(Color.greenPL)
+                            .id(1)
                     }
                     .font(.customFont(name: .angkor, size: 48))
                     .padding(.top)
@@ -57,26 +60,31 @@ struct PlayerSignUpView: View {
                             textField: $fullName,
                             placeholder: "Nombre completo",
                             isPasswordField: false)
+                        .id(2)
                         
                         CustomTextFieldView(
                             textField: $username,
                             placeholder: "Nombre de usuario",
                             isPasswordField: false)
+                        .id(3)
                         
                         CustomTextFieldView(
                             textField: $email,
                             placeholder: "Correo electrónico",
                             isPasswordField: false)
+                        .id(4)
                         
                         CustomTextFieldView(
                             textField: $password,
                             placeholder: "Contraseña",
                             isPasswordField: true)
+                        .id(5)
                         
                         CustomTextFieldView(
                             textField: $passwordRepeat,
                             placeholder: "Repetir contraseña",
                             isPasswordField: true)
+                        .id(6)
                     }
                     .padding(.horizontal, 48)
                     
@@ -109,16 +117,19 @@ struct PlayerSignUpView: View {
                         NavigationLink(destination: ClubSignUpView(viewModel: $viewModel)) {
                             Text("Registrarme como club")
                         }
+                        .id(7)
                         
                         HStack {
                             Text("¿Ya tienes una cuenta?")
                                 .foregroundStyle(Color.whitePL)
+                                .id(8)
                             
                             Button {
                                 viewModel.goLogin = true
                             } label: {
                                 Text("Iniciar sesión")
                             }
+                            .id(9)
                         }
                         .navigationDestination(isPresented: $viewModel.goLogin) {
                             LoginView(viewModel: $viewModel)

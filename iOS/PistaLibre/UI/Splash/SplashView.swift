@@ -17,11 +17,14 @@ struct SplashView: View {
             VStack(spacing: 0) {
                 Text("PISTA")
                     .padding(.bottom, -46)
+                    .id(0)
                 
                 HStack(spacing: 0) {
                     Text("LIBR")
                         .foregroundStyle(Color.greenPL)
+                        .id(1)
                     Text("E")
+                        .id(2)
                 }
             }
             .font(.customFont(name: .angkor, size: 56))

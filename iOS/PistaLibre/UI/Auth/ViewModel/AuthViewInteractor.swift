@@ -55,3 +55,4 @@ final class AuthViewInteractor: AuthViewInteractorProtocol {
         return networker.callServer(type: Token.self, request: networkManager.getSessionCheckToken(endpoint: endpoint))
     }
 }
+ 
