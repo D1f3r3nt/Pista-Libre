@@ -20,9 +20,11 @@ struct ChooseRegistrationView: View {
                     HStack(spacing: 0) {
                         Text("Registr")
                             .foregroundStyle(Color.greenPL)
+                            .id(0)
                         
                         Text("o")
                             .foregroundStyle(Color.whitePL)
+                            .id(1)
                     }
                     .font(.customFont(name: .angkor, size: 48))
                     .padding(.top, 90)
@@ -36,6 +38,7 @@ struct ChooseRegistrationView: View {
                                 widht: 145,
                                 colorButton: Color.greenPL)
                         }
+                        .id(2)
                         
                         NavigationLink(destination: ClubSignUpView(viewModel: $viewModel)) {
                             CustomButtonView(
@@ -43,6 +46,7 @@ struct ChooseRegistrationView: View {
                                 widht: 145,
                                 colorButton: Color.greenPL)
                         }
+                        .id(3)
                     }
                     .padding(.bottom, 40)
 
@@ -51,6 +55,7 @@ struct ChooseRegistrationView: View {
                     HStack {
                         Text("¿Ya tienes una cuenta?")
                             .foregroundStyle(Color.whitePL)
+                            .id(4)
                         
                         Button {
                             viewModel.goLogin = true
@@ -58,6 +63,7 @@ struct ChooseRegistrationView: View {
                             Text("Iniciar sesión")
                                 .foregroundStyle(Color.greenPL)
                         }
+                        .id(5)
                     }
                     .padding(.bottom)
                     .navigationDestination(isPresented: $viewModel.goLogin) {

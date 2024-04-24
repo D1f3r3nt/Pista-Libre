@@ -17,16 +17,18 @@ struct NetworkManager {
     
     func getSession(endpoint: String, email: String, password: String) -> URLRequest? {
         
-        var components = URLComponents(string: "\(baseURL)\(endpoint)")
+        guard var components = URLComponents(string: "\(baseURL)\(endpoint)") else {
+            return nil
+        }
         
         let queryItems = [
             URLQueryItem(name: "email", value: email),
             URLQueryItem(name: "password", value: password)
         ] 
         
-        components?.queryItems = queryItems
+        components.queryItems = queryItems
         
-        guard let url = components?.url else {
+        guard let url = components.url else {
             print("Error: No se pudo crear la URL")
             return nil
         }

@@ -6,36 +6,154 @@
 //
 
 import XCTest
+import SwiftUI
+import ViewInspector
+@testable import PistaLibre
 
 final class PistaLibreUITests: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
-        continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
+    
+    func testSplashView() throws {
+        let splashView = SplashView(isActive: .constant(true))
+        
+        let pistaText = try splashView.inspect().find(viewWithId: 0)
+        XCTAssertNotNil(pistaText)
+        
+        let librText = try splashView.inspect().find(viewWithId: 1)
+        XCTAssertNotNil(librText)
+        
+        let eText = try splashView.inspect().find(viewWithId: 2)
+        XCTAssertNotNil(eText)
     }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    
+    func testLoginView() throws {
+        
+        let viewModel = AuthViewModel()
+        
+        let viewModelBinding = Binding.constant(viewModel)
+        
+        let loginView = LoginView(viewModel: viewModelBinding)
+        XCTAssertNotNil(loginView)
+        
+        let logTitle = try loginView.inspect().find(viewWithId: 1)
+        XCTAssertNotNil(logTitle)
+        
+        let inTitle = try loginView.inspect().find(viewWithId: 2)
+        XCTAssertNotNil(inTitle)
+        
+        let emailTextField = try loginView.inspect().find(viewWithId: 3)
+        XCTAssertNotNil(emailTextField)
+        
+        let passwordSecureField = try loginView.inspect().find(viewWithId: 4)
+        XCTAssertNotNil(passwordSecureField)
+        
+        let button = try loginView.inspect().find(viewWithId: 5)
+        XCTAssertNotNil(button)
+        
+        let question = try loginView.inspect().find(viewWithId: 6)
+        XCTAssertNotNil(question)
+        
+        let register = try loginView.inspect().find(viewWithId: 7)
+        XCTAssertNotNil(register)
     }
-
-    func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
-        app.launch()
-
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    
+    func testChooseRegistrationView() throws {
+        
+        let viewModel = AuthViewModel()
+        
+        let chooseView = ChooseRegistrationView(viewModel: .constant(viewModel))
+        XCTAssertNotNil(chooseView)
+        
+        let registrTitle = try chooseView.inspect().find(viewWithId: 0)
+        XCTAssertNotNil(registrTitle)
+        
+        let oTitle = try chooseView.inspect().find(viewWithId: 1)
+        XCTAssertNotNil(oTitle)
+        
+        let navigationPlayer = try chooseView.inspect().find(viewWithId: 2)
+        XCTAssertNotNil(navigationPlayer)
+        
+        let navigationClub = try chooseView.inspect().find(viewWithId: 3)
+        XCTAssertNotNil(navigationClub)
+        
+        let questionText = try chooseView.inspect().find(viewWithId: 4)
+        XCTAssertNotNil(questionText)
+        
+        let buttonGoLogin = try chooseView.inspect().find(viewWithId: 5)
+        XCTAssertNotNil(buttonGoLogin)
     }
-
-    func testLaunchPerformance() throws {
-        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
-            // This measures how long it takes to launch your application.
-            measure(metrics: [XCTApplicationLaunchMetric()]) {
-                XCUIApplication().launch()
-            }
-        }
+    
+    func testPlayerSignUpView() throws {
+        
+        let viewModel = AuthViewModel()
+        
+        let playerSignUpView = PlayerSignUpView(viewModel: .constant(viewModel))
+        XCTAssertNotNil(playerSignUpView)
+        
+        let registroTitle = try playerSignUpView.inspect().find(viewWithId: 0)
+        XCTAssertNotNil(registroTitle)
+        
+        let jugadorTitle = try playerSignUpView.inspect().find(viewWithId: 1)
+        XCTAssertNotNil(jugadorTitle)
+        
+        let fullName = try playerSignUpView.inspect().find(viewWithId: 2)
+        XCTAssertNotNil(fullName)
+        
+        let username = try playerSignUpView.inspect().find(viewWithId: 3)
+        XCTAssertNotNil(username)
+        
+        let email = try playerSignUpView.inspect().find(viewWithId: 4)
+        XCTAssertNotNil(email)
+        
+        let password = try playerSignUpView.inspect().find(viewWithId: 5)
+        XCTAssertNotNil(password)
+        
+        let repeatPassword = try playerSignUpView.inspect().find(viewWithId: 6)
+        XCTAssertNotNil(repeatPassword)
+        
+        let navigationToClub = try playerSignUpView.inspect().find(viewWithId: 7)
+        XCTAssertNotNil(navigationToClub)
+        
+        let questionText = try playerSignUpView.inspect().find(viewWithId: 8)
+        XCTAssertNotNil(questionText)
+        
+        let buttonGoLogin = try playerSignUpView.inspect().find(viewWithId: 9)
+        XCTAssertNotNil(buttonGoLogin)
+    }
+    
+    func testClubSignUpView() throws {
+        let viewModel = AuthViewModel()
+        
+        let clubSignUpView = ClubSignUpView(viewModel: .constant(viewModel))
+        XCTAssertNotNil(clubSignUpView)
+        
+        let registroTitle = try clubSignUpView.inspect().find(viewWithId: 0)
+        XCTAssertNotNil(registroTitle)
+        
+        let clubTitle = try clubSignUpView.inspect().find(viewWithId: 1)
+        XCTAssertNotNil(clubTitle)
+        
+        let name = try clubSignUpView.inspect().find(viewWithId: 2)
+        XCTAssertNotNil(name)
+        
+        let location = try clubSignUpView.inspect().find(viewWithId: 3)
+        XCTAssertNotNil(location)
+        
+        let email = try clubSignUpView.inspect().find(viewWithId: 4)
+        XCTAssertNotNil(email)
+        
+        let password = try clubSignUpView.inspect().find(viewWithId: 5)
+        XCTAssertNotNil(password)
+        
+        let repeatPassword = try clubSignUpView.inspect().find(viewWithId: 6)
+        XCTAssertNotNil(repeatPassword)
+        
+        let navigationToPlayer = try clubSignUpView.inspect().find(viewWithId: 7)
+        XCTAssertNotNil(navigationToPlayer)
+        
+        let questionText = try clubSignUpView.inspect().find(viewWithId: 8)
+        XCTAssertNotNil(questionText)
+        
+        let buttonGoLogin = try clubSignUpView.inspect().find(viewWithId: 9)
+        XCTAssertNotNil(buttonGoLogin)
     }
 }
