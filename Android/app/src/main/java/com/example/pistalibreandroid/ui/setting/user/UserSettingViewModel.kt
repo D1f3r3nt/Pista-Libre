@@ -33,6 +33,10 @@ class UserSettingViewModel @Inject constructor(
     val isConfigEnable: StateFlow<Boolean> = _isConfigEnable
     val state: StateFlow<ResponseState> = _state
 
+    fun resetState() {
+        _state.value = Idle()
+    }
+    
     fun onConfigChanged(fullname: String, username: String) {
         _fullname.value = fullname
         _username.value = username
@@ -43,7 +47,7 @@ class UserSettingViewModel @Inject constructor(
         _sidePlay.value = sidePlay
     }
 
-    fun enableConfig(fullname: String, username: String) = fullname.length > 1 && username.length > 1
+    private fun enableConfig(fullname: String, username: String) = fullname.length > 1 && username.length > 1
     
     fun postConfig() {
         viewModelScope.launch {

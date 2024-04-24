@@ -28,6 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -50,10 +51,12 @@ import androidx.navigation.NavHostController
 import com.example.pistalibreandroid.R
 import com.example.pistalibreandroid.model.ResponseError
 import com.example.pistalibreandroid.model.ResponseLoading
+import com.example.pistalibreandroid.model.ResponseOk
 import com.example.pistalibreandroid.model.ResponseState
 import com.example.pistalibreandroid.ui.navigation.Navigation
 import com.example.pistalibreandroid.ui.navigation.NavigationController
 import com.example.pistalibreandroid.ui.theme.angkorFamily
+import kotlinx.coroutines.delay
 
 
 @Composable
@@ -75,10 +78,15 @@ fun SignUserScreen(
             .padding(8.dp)
     ){
         val state: ResponseState by signUserViewModel.state.collectAsState()
+        val navController = NavigationController.controller()
 
         when (state) {
             is ResponseError -> {
                 Text(text = (state as ResponseError).msg)
+                LaunchedEffect(key1 = Unit) {
+                    delay(3000)
+                    signUserViewModel.resetState()
+                }
             }
             is ResponseLoading -> {
                 Box(
@@ -87,6 +95,10 @@ fun SignUserScreen(
                         .align(Alignment.TopCenter)){
                     Text(text = "Loading")
                 }
+            }
+            is ResponseOk -> {
+                navController.navigate(Navigation.LOGIN_ROUTE)
+                signUserViewModel.resetState()
             }
             else -> {
                 Column(Modifier.align(Alignment.TopCenter)) {
@@ -164,7 +176,7 @@ fun RegisterButton(registerEnable: Boolean, signUserViewModel: SignUserViewModel
 fun FullName(fullName:String, onTextChanged: (String) -> Unit, modifier: Modifier = Modifier) {
     TextField(value = fullName,
         onValueChange = { onTextChanged(it) },
-        modifier = modifier.width(300.dp).height(45.dp),
+        modifier = modifier.width(300.dp).height(55.dp),
         placeholder = { Text(text = "Nombre completo", fontSize = 14.sp, color = Color.Gray)},
         maxLines = 1,
         singleLine = true,
@@ -182,7 +194,7 @@ fun FullName(fullName:String, onTextChanged: (String) -> Unit, modifier: Modifie
 fun UserName(userName:String, onTextChanged: (String) -> Unit, modifier: Modifier = Modifier) {
     TextField(value = userName,
         onValueChange = { onTextChanged(it) },
-        modifier = modifier.width(300.dp).height(45.dp),
+        modifier = modifier.width(300.dp).height(55.dp),
         placeholder = { Text(text = "Nombre de usuario", fontSize = 14.sp, color = Color.Gray)},
         maxLines = 1,
         singleLine = true,
@@ -203,7 +215,7 @@ fun Password(password:String, onTextChanged: (String) -> Unit, modifier: Modifie
     
     TextField(value = password,
         onValueChange = { onTextChanged(it) },
-        modifier = modifier.width(300.dp).height(45.dp),
+        modifier = modifier.width(300.dp).height(55.dp),
         placeholder = { Text(text = "Contraseña", fontSize = 14.sp, color = Color.Gray)},
         maxLines = 1,
         singleLine = true,
@@ -239,7 +251,7 @@ fun RepeatPassword(repeatpassword:String, onTextChanged: (String) -> Unit, modif
     var passwordVisibility by remember { mutableStateOf(false) }
     TextField(value = repeatpassword,
         onValueChange = { onTextChanged(it) },
-        modifier = modifier.width(300.dp).height(45.dp),
+        modifier = modifier.width(300.dp).height(55.dp),
         placeholder = { Text(text = "Repetir contraseña", fontSize = 14.sp, color = Color.Gray)},
         maxLines = 1,
         singleLine = true,
@@ -273,7 +285,7 @@ fun RepeatPassword(repeatpassword:String, onTextChanged: (String) -> Unit, modif
 fun Email(email:String, onTextChanged: (String) -> Unit, modifier: Modifier = Modifier) {
     TextField(value = email,
         onValueChange = { onTextChanged(it) },
-        modifier = modifier.width(300.dp).height(45.dp),
+        modifier = modifier.width(300.dp).height(55.dp),
         placeholder = { Text(text = "Correo electrónico", fontSize = 14.sp, color = Color.Gray)},
         maxLines = 1,
         singleLine = true,

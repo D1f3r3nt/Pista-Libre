@@ -1,6 +1,6 @@
 package com.example.pistalibreandroid.ui.registro.player
 
-import android.util.Patterns
+import androidx.core.util.PatternsCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pistalibreandroid.data.Repository
@@ -34,7 +34,18 @@ class SignUserViewModel @Inject constructor(
     var isUserSignEnable : StateFlow<Boolean> = _isUserSignEnable
     val state: StateFlow<ResponseState> = _state
 
+    fun resetState() {
+        _state.value = Idle()
+    }
 
+    /**
+     * Funcion para setear los nuevos valores
+     * 
+     * @param username String?
+     * @param fullname String?
+     * @param email String
+     * @param password String
+     */
     fun onUserSignChanged(username: String? = null, fullname: String? = null, email:String, password:String) {
         username?.let { _username.value = it }
         fullname?.let { _fullname.value = it }
@@ -44,7 +55,7 @@ class SignUserViewModel @Inject constructor(
     }
 
     private fun enableSignUser(email: String, password: String) =
-        Patterns.EMAIL_ADDRESS.matcher(email).matches() && password.length > 5
+        PatternsCompat.EMAIL_ADDRESS.matcher(email).matches() && password.length > 5
 
     fun onSignUpSelected(){
         viewModelScope.launch {
@@ -52,9 +63,8 @@ class SignUserViewModel @Inject constructor(
             val result = repository.singUpUser(username.value, fullname.value, email.value, password.value)
             
             if(result.isSuccessful){
-                _state.value = ResponseOk(Unit)
                 
-                //Navegar a la pantalla de login
+                _state.value = ResponseOk(Unit)
             } else {
                 _state.value = ResponseError("Email or username already exists")
             }

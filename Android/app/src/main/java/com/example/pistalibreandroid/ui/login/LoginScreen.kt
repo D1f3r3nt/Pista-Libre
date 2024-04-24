@@ -27,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -54,6 +55,7 @@ import com.example.pistalibreandroid.ui.navigation.Navigation
 import com.example.pistalibreandroid.ui.navigation.NavigationController
 import com.example.pistalibreandroid.ui.theme.angkorFamily
 import com.example.pistalibreandroid.ui.theme.robotoBold
+import kotlinx.coroutines.delay
 
 @Composable
 fun LoginScreen(loginViewModel: LoginViewModel, navController: NavController) {
@@ -78,6 +80,10 @@ fun LoginScreen(loginViewModel: LoginViewModel, navController: NavController) {
         when (state) {
             is ResponseError -> {
                 Text(text = (state as ResponseError).msg)
+                LaunchedEffect(key1 = Unit) {
+                    delay(3000)
+                    loginViewModel.resetState()
+                }
             }
             is ResponseLoading -> {
                 Box(
@@ -89,6 +95,7 @@ fun LoginScreen(loginViewModel: LoginViewModel, navController: NavController) {
             }
             is ResponseOk -> {
                 navController.navigate(Navigation.HOMEPLAYER_ROUTE)
+                loginViewModel.resetState()
             }
             else -> {
                 Body(Modifier.align(Alignment.Center), loginViewModel, navController)
@@ -143,7 +150,10 @@ fun Body(modifier: Modifier, loginViewModel: LoginViewModel, navController: NavC
         Spacer(modifier = Modifier.size(62.dp))
         LoginButton(isLoginEnable = isLoginEnable, onLoginSuccess = {
             loginViewModel.onLoginSelected()
-        }, modifier = Modifier.width(100.dp).height(34.dp).align(Alignment.CenterHorizontally))
+        }, modifier = Modifier
+            .width(100.dp)
+            .height(34.dp)
+            .align(Alignment.CenterHorizontally))
         Spacer(modifier = Modifier.size(48.dp))
     }
 }
@@ -186,7 +196,9 @@ fun Password(password: String, onTextChanged: (String) -> Unit, modifier: Modifi
     TextField(
         value = password,
         onValueChange = { onTextChanged(it) },
-        modifier = modifier.width(300.dp).height(45.dp),
+        modifier = modifier
+            .width(300.dp)
+            .height(55.dp),
         placeholder = { Text(text = "Contraseña", fontSize = 14.sp, color = Color.Gray)},
         maxLines = 1,
         singleLine = true,
@@ -222,7 +234,9 @@ fun Email(email: String, onTextChanged: (String) -> Unit, modifier: Modifier = M
     TextField(
         value = email,
         onValueChange = { onTextChanged(it) },
-        modifier = modifier.width(300.dp).height(45.dp),
+        modifier = modifier
+            .width(300.dp)
+            .height(55.dp),
         placeholder = { Text(text = "Correo electrónico", fontSize = 14.sp, color = Color.Gray)},
         maxLines = 1,
         singleLine = true,

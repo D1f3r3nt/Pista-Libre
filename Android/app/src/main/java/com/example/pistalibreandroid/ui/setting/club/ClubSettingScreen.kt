@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.Remove
@@ -28,11 +29,13 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -51,6 +54,8 @@ import com.example.pistalibreandroid.model.ResponseLoading
 import com.example.pistalibreandroid.model.ResponseOk
 import com.example.pistalibreandroid.model.ResponseState
 import com.example.pistalibreandroid.model.setting.club.CourtList
+import com.example.pistalibreandroid.ui.navigation.Navigation
+import com.example.pistalibreandroid.ui.navigation.NavigationController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -80,10 +85,12 @@ fun ClubSettingScreen_Body(clubSettingViewModel: ClubSettingViewModel) {
 
     if (state is ResponseError) {
         Toast.makeText(context, (state as ResponseError).msg, Toast.LENGTH_LONG).show()
+        clubSettingViewModel.resetState()
     }
 
     if (state is ResponseOk) {
         Toast.makeText(context, "Guardado", Toast.LENGTH_LONG).show()
+        clubSettingViewModel.resetState()
     }
 
     Column(
@@ -158,7 +165,14 @@ fun ClubSettingScreen_Form(clubSettingViewModel: ClubSettingViewModel) {
             onValueChange = {
                 clubSettingViewModel.onConfigChanged(it, direction)
             },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.width(300.dp).height(55.dp).align(Alignment.CenterHorizontally),
+            colors = TextFieldDefaults.textFieldColors(
+                textColor = Color.Gray,
+                containerColor = Color.White,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+            ),
+            shape = RoundedCornerShape(12.dp)
         )
 
         Spacer(modifier = Modifier.size(20.dp))
@@ -173,7 +187,14 @@ fun ClubSettingScreen_Form(clubSettingViewModel: ClubSettingViewModel) {
             onValueChange = {
                 clubSettingViewModel.onConfigChanged(name, it)
             },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.width(300.dp).height(55.dp).align(Alignment.CenterHorizontally),
+            colors = TextFieldDefaults.textFieldColors(
+                textColor = Color.Gray,
+                containerColor = Color.White,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+            ),
+            shape = RoundedCornerShape(12.dp)
         )
 
         Spacer(modifier = Modifier.size(20.dp))
@@ -257,6 +278,8 @@ fun ClubSettingScreen_Courts(clubSettingViewModel: ClubSettingViewModel) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ClubSettingScreen_TopAppBar() {
+    val navController = NavigationController.controller()
+    
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = colorResource(id = R.color.gristop)),
         title = {
@@ -266,11 +289,26 @@ fun ClubSettingScreen_TopAppBar() {
             )
         },
         navigationIcon = {
-            Icon(
-                imageVector = Icons.Filled.ArrowBackIosNew,
-                contentDescription = null,
-                tint = colorResource(id = R.color.verdeApp)
-            )
+            IconButton(onClick = { 
+                navController.navigate(Navigation.HOMEPLAYER_ROUTE)
+            }) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBackIosNew,
+                    contentDescription = null,
+                    tint = colorResource(id = R.color.verdeApp)
+                )
+            }
+        },
+        actions = {
+            IconButton(onClick = {
+                navController.navigate(Navigation.LOGIN_ROUTE)
+            }) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.Logout,
+                    contentDescription = null,
+                    tint = colorResource(id = R.color.verdeApp)
+                )
+            }
         }
     )
 }

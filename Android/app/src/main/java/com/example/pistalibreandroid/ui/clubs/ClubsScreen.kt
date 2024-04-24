@@ -53,13 +53,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pistalibreandroid.R
 import com.example.pistalibreandroid.data.network.response.ClubsListResponse
+import com.example.pistalibreandroid.ui.navigation.Navigation
+import com.example.pistalibreandroid.ui.navigation.NavigationController
 import com.example.pistalibreandroid.ui.theme.robotoBold
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ClubsScreen(viewModel: ClubsViewModel) {
-    val clubList by viewModel.clubsList.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
 
     Scaffold(bottomBar = { BottomBar() }) {
@@ -69,21 +70,23 @@ fun ClubsScreen(viewModel: ClubsViewModel) {
                 CircularProgressIndicator()
             }
         } else {
-            MainContent(clubList)
+            MainContent(viewModel)
         }
     }
 }
 
 @Composable
-fun MainContent(clubList: List<ClubsListResponse>) {
+fun MainContent(viewModel: ClubsViewModel) {
+    val clubList by viewModel.clubsList.collectAsState()
     val colorVerde = colorResource(id = R.color.verdeApp)
+    
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(colorVerde)
     ) {
         Column {
-            TopBar()
+            TopBar(viewModel)
             ClubsList(clubList)
         }
     }
@@ -160,8 +163,10 @@ fun LocationClubs(clubList: List<ClubsListResponse>) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar() {
+fun TopBar(viewModel: ClubsViewModel) {
     val colorVerde = colorResource(id = R.color.verdeApp)
+    val navController = NavigationController.controller()
+    
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -181,7 +186,17 @@ fun TopBar() {
         )
 
         IconButton(
-            onClick = { }
+            onClick = {
+                val direction = viewModel.navigateToSettings()
+                
+                direction?.let { 
+                    if (it == "club") {
+                        navController.navigate(Navigation.SETTING_CLUB_ROUTE)
+                    } else {
+                        navController.navigate(Navigation.SETTING_USER_ROUTE)
+                    }
+                }
+            }
         ) {
             Icon(
                 imageVector = Icons.Filled.Settings,

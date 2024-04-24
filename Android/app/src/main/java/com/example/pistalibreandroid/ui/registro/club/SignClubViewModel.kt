@@ -1,6 +1,6 @@
 package com.example.pistalibreandroid.ui.registro.club
 
-import android.util.Patterns
+import androidx.core.util.PatternsCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pistalibreandroid.data.Repository
@@ -35,6 +35,10 @@ class SignClubViewModel @Inject constructor(
     val isSignClubEnable: StateFlow<Boolean> = _isSignClubEnable
     val state: StateFlow<ResponseState> = _state
 
+    fun resetState() {
+        _state.value = Idle()
+    }
+    
     fun onSignClubChanged(clubName: String? = null, directionClub: String? = null, email: String, password: String) {
         clubName?.let { _clubName.value = it }
         directionClub?.let { _directionClub.value = it }
@@ -44,7 +48,7 @@ class SignClubViewModel @Inject constructor(
     }
 
     private fun enableSignClub(email: String, password: String) =
-        Patterns.EMAIL_ADDRESS.matcher(email).matches() && password.length > 5
+        PatternsCompat.EMAIL_ADDRESS.matcher(email).matches() && password.length > 5
 
     fun onSignUpClubSelected() {
         viewModelScope.launch {
@@ -52,9 +56,8 @@ class SignClubViewModel @Inject constructor(
             val result = repository.singUpClub(clubName.value, directionClub.value, email.value, password.value)
 
             if (result.isSuccessful) {
+                
                 _state.value = ResponseOk(Unit)
-
-                //Navegar a la pantalla de login
             } else {
                 _state.value = ResponseError("Email already exists")
             }

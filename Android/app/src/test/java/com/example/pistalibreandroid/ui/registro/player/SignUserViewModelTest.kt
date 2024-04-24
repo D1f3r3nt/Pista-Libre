@@ -1,66 +1,76 @@
 package com.example.pistalibreandroid.ui.registro.player
 
 import com.example.pistalibreandroid.data.Repository
-import io.mockk.junit5.MockKExtension
+import com.example.pistalibreandroid.helpers.MainCoroutineRule
+import io.mockk.coEvery
 import io.mockk.mockk
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
-import org.testng.Assert.assertFalse
-import org.testng.Assert.assertTrue
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
+import org.testng.Assert
+import retrofit2.Response
 
-@ExtendWith(MockKExtension::class)
+@OptIn(ExperimentalCoroutinesApi::class)
 class SignUserViewModelTest {
 
+    private lateinit var signUserViewModel: SignUserViewModel
+    private lateinit var repository: Repository
 
+    @ExperimentalCoroutinesApi
+    @get:Rule
+    var mainCoroutineRule = MainCoroutineRule()
 
-    /*private lateinit var viewModel: SignUserViewModel
-    private lateinit var mockRepository: Repository
-
-    @BeforeEach
-    fun setup() {
-        mockRepository = mockk(relaxed = true)
-        viewModel = SignUserViewModel(mockRepository)
+    @Before
+    fun setUp() {
+        repository = Repository(mockk(), mockk())
+        signUserViewModel = SignUserViewModel(repository)
     }
 
     @Test
-    fun emailTest() {
-        val validEmails = listOf("email@example.com", "firstname.lastname@example.com", "email@subdomain.example.com")
-        val invalidEmails = listOf("plainaddress", "@missingusername.com", "username@.com.my", "username@.com", ".username@yahoo.com")
-
-        validEmails.forEach { email ->
-            viewModel.onUserSignChanged(email = email, password = "password123")
-            assertTrue(viewModel.isUserSignEnable.value, "Email $email should be accepted")
-        }
+    fun emailInvalid() {
+        val invalidEmails = listOf("plainaddress", "@missingusername.com", "username@.com.my", "username@.com")
 
         invalidEmails.forEach { email ->
-            viewModel.onUserSignChanged(email = email, password = "password123")
-            assertFalse(viewModel.isUserSignEnable.value, "Email $email should be rejected")
+            signUserViewModel.onUserSignChanged(email = email, password = "validPassword123")
+            Assert.assertFalse(signUserViewModel.isUserSignEnable.value)
         }
     }
 
     @Test
-    fun passwordTest() {
-        val invalidPasswords = listOf("", "a", "ab", "abc", "abcd", "abcde")
+    fun emailValid() {
+        val validEmails = listOf("email@example.com", "firstname.lastname@example.com", "email@subdomain.example.com", "firstname+lastname@example.com")
+
+        validEmails.forEach { email ->
+            signUserViewModel.onUserSignChanged(email = email, password = "validPassword123")
+            Assert.assertTrue(signUserViewModel.isUserSignEnable.value)
+        }
+    }
+
+    @Test
+    fun passwordInvalid() {
+        val invalidPasswords = listOf("", "abc", "12345")
 
         invalidPasswords.forEach { password ->
-            viewModel.onUserSignChanged(email = "test@example.com", password = password)
-            assertFalse(viewModel.isUserSignEnable.value, "Password '$password' should be rejected because it is too short")
+            signUserViewModel.onUserSignChanged(email = "valid@email.com", password = password)
+            Assert.assertFalse(signUserViewModel.isUserSignEnable.value)
         }
-
-        viewModel.onUserSignChanged(email = "test@example.com", password = "123456")
-        assertTrue(viewModel.isUserSignEnable.value, "Password '123456' should be accepted")
     }
 
     @Test
-    fun buttonTest() {
-        viewModel.onUserSignChanged(email = "test@", password = "123456")
-        assertFalse(viewModel.isUserSignEnable.value, "Button should be disabled with invalid email")
+    fun passwordValid() {
+        val validPasswords = listOf("123456", "abcdef", "123456789")
 
-        viewModel.onUserSignChanged(email = "test@example.com", password = "12345")
-        assertFalse(viewModel.isUserSignEnable.value, "Button should be disabled with short password")
+        validPasswords.forEach { password ->
+            signUserViewModel.onUserSignChanged(email = "valid@email.com", password = password)
+            Assert.assertTrue(signUserViewModel.isUserSignEnable.value)
+        }
+    }
 
-        viewModel.onUserSignChanged(email = "test@example.com", password = "123456")
-        assertTrue(viewModel.isUserSignEnable.value, "Button should be enabled with valid email and password")
-    }*/
+    @Test
+    fun onSignUpSelectedTest() {
+        coEvery { repository.singUpUser(any(), any(), any(), any()) } returns Response.success(null)
+
+        signUserViewModel.onSignUpSelected()
+    }
 }

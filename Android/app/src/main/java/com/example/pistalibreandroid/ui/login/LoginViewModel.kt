@@ -1,6 +1,6 @@
 package com.example.pistalibreandroid.ui.login
 
-import android.util.Patterns
+import androidx.core.util.PatternsCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pistalibreandroid.data.Repository
@@ -10,10 +10,8 @@ import com.example.pistalibreandroid.model.ResponseLoading
 import com.example.pistalibreandroid.model.ResponseOk
 import com.example.pistalibreandroid.model.ResponseState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -32,8 +30,15 @@ class LoginViewModel @Inject constructor(
     val isLoginEnable: StateFlow<Boolean> = _isLoginEnable
     val state: StateFlow<ResponseState> = _state
 
+    fun resetState() {
+        _state.value = Idle()
+    }
 
-    // Función que llamamos para cuando los inputs de login cambian
+    /**
+     * Función que llamamos para cuando los inputs de login cambian
+     * @param email String
+     * @param password String
+     */
     fun onLoginChanged(email: String, password: String) {
         _email.value = email
         _password.value = password
@@ -41,24 +46,45 @@ class LoginViewModel @Inject constructor(
         _isLoginEnable.value = enableLogin(email, password)
     }
 
-    fun enableLogin(email: String, password: String) =
-        Patterns.EMAIL_ADDRESS.matcher(email).matches() && password.length > 5
+    /**
+     * Función para controlar el formato correcto de los valores
+     * @return Boolean -> Para saber si cumple o no el formato
+     */
+    private fun enableLogin(email: String, password: String) =
+        PatternsCompat.EMAIL_ADDRESS.matcher(email).matches() && password.length > 5
 
-    // Función llamada cuando se selecciona la opción de login
+    /**
+     * Función llamada cuando se selecciona la opción de login
+     */
     fun onLoginSelected() {
-        viewModelScope.launch {
-            _state.value = ResponseLoading()
+            viewModelScope.launch {
+                _state.value = ResponseLoading()
             val result = repository.login(email.value, password.value)
-            
+
             if (result.isSuccessful) {
                 // Si el login es exitoso, guardamos el token y actualizamos el estado a Ok
                 repository.setToken(result.body()!!)
-                _state.value = ResponseOk(Unit)
+                
+                // Obtener si es user o club
+                getDataFromToken()
 
             } else {
                 // Si el login falla, actualizamos el estado a Error
                 _state.value = ResponseError(result.body()!!)
             }
+        }
+    }
+    
+    private suspend fun getDataFromToken() {
+        val resultToken = repository.checkToken()
+        
+        if (resultToken.isSuccessful) {
+            resultToken.body()?.let { repository.setTypeUser(it.type) }
+            
+            _state.value = ResponseOk(Unit)
+        } else {
+            // Si el login falla, actualizamos el estado a Error
+            _state.value = ResponseError("Error al obtener el tipo de user")
         }
     }
 
